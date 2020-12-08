@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+>
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Bibliothèque Municipale - Consultation et prêt d'ouvrages</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+
+<body >
+<header>
+    <div id="titre_principal" class="container">
+        <h1><strong>BIBLIOTHEQUE MUNICIPALE</strong></h1>
+    </div>
+    <div id="sous_titre" class="container">
+        <h2>Consulter et emprunter des ouvrages</h2>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <p>Bonjour et bienvenue sur le site de <strong>La Bibliothèque Municipale.</strong></p>
+        <p>Cette espace est dedié à la consultation ainsi qu'à l'emprunt d'ouvrages mis à disposition par la bibliothèque.</p>
+        <p><strong>N'hesitez pas à nous rejoindre !</strong></p>
+
+
+
+    </article>
+</div>
+
+<div id="onglets" class="container">
+    <nav>
+
+
+        <ul class="nav nav-pills ">
+            <li ><a th:href="@{Ouvrages}"><strong>CONSULTER LES OUVRAGES</strong></a></li>
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{Inscription}"><strong>S'INSCRIRE</strong></a></li>
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{Connection}"><strong>SE CONNECTER</strong></a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{EspacePerso}"><strong>ESPACE PERSO</strong></a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{Deconnection}"><strong>SE DECONNECTER</strong></a></li>
+        </ul>
+    </nav>
+</div>
+
+<div id="welcome" class="container " sec:authorize="isAuthenticated()">
+    <h3><strong><span class="glyphicon glyphicon-user"></span>  Bienvenue <span sec:authentication="principal.prenom"></span> !</strong></h3>
+</div>
+
+
+<section layout:fragment="content"></section>
+
+
+<div id="footer" class="container ">
+    <footer >
+        Copyright-Bibliothèque Municipale de la ville-2020
+    </footer>
+</div>
+
+</body>
+</html>

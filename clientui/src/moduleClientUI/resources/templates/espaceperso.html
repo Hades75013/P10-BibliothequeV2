@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+        layout:decorate="~{accueil}">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <title>Consulter et emprunter des ouvrages</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+
+    <br>
+
+    <div sec:authorize="hasAuthority('USER')" id="categories_espace_perso_User" class="container">
+
+        <div id="espaceperso_reservations" class="container">
+            <form class="form-inline" th:action="@{/ResasUtilisateur}" method="get">
+                <button class="btn btn-primary"><strong>MES RESERVATIONS</strong></button>
+            </form>
+        </div>
+
+        <div id="espaceperso_prets" class="container">
+            <form class="form-inline" th:action="@{/PretsUtilisateur}" method="get">
+                <button class="btn btn-primary"><strong>MES PRETS</strong></button>
+            </form>
+        </div>
+
+    </div>
+
+
+    <div  sec:authorize="hasAuthority('ADMIN')" id="categories_espace_perso_Admin" class="container">
+
+        <div id="liste_reservations" class="container">
+
+            <div class="table-responsive col-lg-12 col-md-10 col-xs-9">
+                <h4><strong> LISTE DE PRETS DES LECTEURS  </strong></h4>
+                <br>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id Lecteur</th>
+                        <th>Date de réservation</th>
+                        <th>Ouvrage</th>
+                        <th>Statut</th>
+                        <th>Valider</th>
+                        <th>Retour</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pret:${listePrets}">
+                        <td th:text="${pret.idUtilisateur}"></td>
+                        <td th:text="${pret.dateReservation}"></td>
+                        <td th:text="${pret.ouvrage.titre}"></td>
+                        <td th:text="${pret.statut}"></td>
+                        <td><a th:if="${pret.enAttente}" th:href="@{/ValiderPret(idPret=${pret.id})}" method="get" class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up"></span></a></td>
+                        <td><a th:if="${pret.enCours or pret.Prolonge or pret.Depasse}" th:href="@{/RetourPret(idPret=${pret.id})}" method="get" class="btn btn-primary"><span class="glyphicon glyphicon-time"></span></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    <p layout:fragment="footer"></p>
+</footer>
+
+
+</body>
+</html>

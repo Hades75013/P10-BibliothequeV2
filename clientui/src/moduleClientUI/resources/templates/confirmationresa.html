@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{accueil}">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <title>Bibliothèque Municipale - Consultation et prêt d'ouvrages</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+
+    <div class="container">
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <span class="green"><strong>Nous avons bien reçu votre demande de reservation, elle sera traitée dans les meilleurs délais !</strong></span>
+            </div>
+
+            <div class="panel-body">
+                <label>Pour rappel, voici l'ouvrage réservé :</label><br>
+                <label th:text="${ouvrage.titre}"></label>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    <p layout:fragment="footer"></p>
+</footer>
+
+</body>
+</html>

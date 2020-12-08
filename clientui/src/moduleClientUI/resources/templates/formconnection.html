@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{accueil}">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <title>Bibliothèque Municipale - Consultation et prêt d'ouvrages</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+
+    <div class="container">
+        <div class="table-responsive col-lg-4 col-md-6 col-xs-3">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4>Connection à votre compte</h4></div>
+                <div class="panel-body">
+                    <form th:action="@{Login}" method="post">
+                        <div class="form-group">
+                            <label class="control-label">Email :</label>
+                            <input class="form-control" type="email" name="username" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Mot de passe :</label>
+                            <input class="form-control" type="password" name="password" />
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary"><strong>Se connecter</strong></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<footer>
+    <p layout:fragment="footer"></p>
+</footer>
+
+</body>
+</html>
