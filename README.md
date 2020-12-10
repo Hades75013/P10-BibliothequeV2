@@ -1,5 +1,12 @@
 # P7-Bibliotheque
 
+
+## Architecture 
+
+Le projet repose sur une architecture API Rest 
+3 modules (clientui, library et user) communiquent entre eux via Feign
+
+
 ## Développement
 
 Cette application a été développée avec :
@@ -30,7 +37,7 @@ Les frameworks utilisés sont :
   Lancer le script "DumpCreateAndInsertTo.sql" pour créer la bdd et insérer les données.
 
 * Utilisateurs créés au préalable  
- 3 usagers lambda (role USER): 
+ 3 lecteurs lambda (role USER): 
   
   Email : p7bibliou1@gmail.com
   Mot de passe : user
