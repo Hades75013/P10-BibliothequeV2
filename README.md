@@ -48,7 +48,7 @@ Les frameworks utilisés sont :
   Email : p7bibliou3@gmail.com
   Mot de passe : bourriquet
 
- Un personnnel de bibliothèque (role ADMIN): 
+  Un personnnel de bibliothèque (role ADMIN): 
   
   Email : p7biblioadm@gmail.com
   Mot de passe : admin
