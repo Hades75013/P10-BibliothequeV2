@@ -3,8 +3,8 @@
 
 ## Architecture 
 
-Le projet repose sur une architecture API Rest 
-3 modules (clientui, library et user) communiquent entre eux via Feign
+- Le projet repose sur une architecture API Rest 
+- 3 modules (clientui, library et user) communiquent entre eux via Feign
 
 
 ## Développement
