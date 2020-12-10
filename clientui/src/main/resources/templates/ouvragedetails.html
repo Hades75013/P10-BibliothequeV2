@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+        layout:decorate="~{accueil}"
+>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <title>Consulter et emprunter des ouvrages</title>
+</head>
+
+<body>
+
+
+<section layout:fragment="content">
+
+    <div id="recherche" class="container">
+
+        <div id="formRechercheByTitre" class="container">
+            <form  th:action="@{/RechercheParTitre}" method="get">
+                <label>Titre : </label><br>
+                <input type="text" name="titre" th:value="${titre}"><br>
+                <button id="boutonRechercher" class="btn btn-primary"><strong>Rechercher</strong><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+        </div>
+
+        <div id="formRechercheByAuteur" class="container">
+            <form  th:action="@{/RechercheParAuteur}" method="get">
+                <label>Auteur : </label><br>
+                <input type="text" name="auteur" th:value="${auteur}"><br>
+                <button id="boutonRechercher" class="btn btn-primary"><strong>Rechercher</strong><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+        </div>
+
+        <div id="formRechercheByGenre" class="container">
+            <form  th:action="@{/RechercheParGenre}" method="get">
+                <label>Genre : </label><br>
+                <input type="text" name="genre" th:value="${genre}"><br>
+                <button id="boutonRechercher" class="btn btn-primary"><strong>Rechercher</strong><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="ouvrage_details" class="container">
+
+        <div class="table-responsive col-lg-12 col-md-10 col-xs-9">
+            <div id="titreTableau"><h4><strong> DETAILS DE L'OUVRAGE <div th:text="${ouvrage.titre}"></div></strong></h4></div>
+            <br>
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>Année d'édition</th>
+                    <th>Côte</th>
+                    <th>Nb de pages</th>
+                    <th>Nb d'exemplaires dispo</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${ouvrage.anneeEdition}"></td>
+                    <td th:text="${ouvrage.cote}"></td>
+                    <td th:text="${ouvrage.nombrePages}"></td>
+                    <td th:text="${ouvrage.nbExemplairesDispo}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="formRechercheDispo" class="container" >
+        <form th:action="@{/RechercheParDispo}" method="get">
+            <button class="btn btn-primary"><strong>Rechercher ouvrages disponibles</strong></button>
+        </form>
+    </div>
+
+</section>
+
+<footer>
+    <p layout:fragment="footer"></p>
+</footer>
+
+</body>
+</html>

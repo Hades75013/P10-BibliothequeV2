@@ -1,0 +1,105 @@
+body
+{
+	font-family: verdana,arial, sans-serif;
+	background-color: rgb(150,100,100);
+}
+
+header
+{
+	font-style: italic;
+	text-align: center;
+}
+
+footer
+{
+	text-align: center;
+	margin-top : 30px;
+}
+
+.container
+{
+	text-align: center;
+	display: flex;
+    justify-content: center;
+}
+
+h3
+{
+	color : white;
+}
+
+th
+{
+	text-align: center;
+}
+
+
+nav ul
+{
+	list-style-type: none;
+	display : flex;
+	flex-wrap: nowrap;
+	justify-content: center;
+}
+
+nav li
+{
+  	margin: 10px;
+  	padding: 2px;
+  	border: solid black;
+  	border-radius : 5px;
+  	background-color: #c0c0c0;
+}
+
+nav a
+{
+	font-size: 1em;
+	color: black;
+	text-decoration: none;
+}
+
+button
+{
+ 	margin-right: 10px;
+ }
+
+.btn-primary
+{
+  	padding: 10px;
+  	border: solid black;
+  	border-radius : 5px;
+  	background-color: #c0c0c0;
+  	color:black;
+  	font-style: italic;
+}
+
+#titre_principal
+{
+	color : white;
+}
+
+#titreTableau
+{
+	font-size: 3em;
+	font-style: italic;
+	margin-top : 30px;
+	color : white;
+
+}
+
+#formRechercheByTitre,#formRechercheByAuteur,#formRechercheByGenre
+{
+    display: flex;
+}
+
+#boutonRechercher
+{
+    margin-top: 10px;
+}
+
+#welcome
+{
+	display: flex;
+	justify-content: center;
+	color : #c0c0c0;
+}

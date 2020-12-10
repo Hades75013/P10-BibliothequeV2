@@ -30,7 +30,7 @@ Les frameworks utilisés sont :
   Lancer le script "DumpCreateAndInsertTo.sql" pour créer la bdd et insérer les données.
 
 * Utilisateurs créés au préalable  
-- 3 usagers lambda (role USER): 
+ 3 usagers lambda (role USER): 
   
   Email : p7bibliou1@gmail.com
   Mot de passe : user
@@ -41,7 +41,7 @@ Les frameworks utilisés sont :
   Email : p7bibliou3@gmail.com
   Mot de passe : bourriquet
 
-- Un personnnel de bibliothèque (role ADMIN): 
+ Un personnnel de bibliothèque (role ADMIN): 
   
   Email : p7biblioadm@gmail.com
   Mot de passe : admin
