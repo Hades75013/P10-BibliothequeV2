@@ -13,44 +13,6 @@ public class IExemplaireServiceImpl implements IExemplaireService{
     @Autowired
     ExemplaireDao exemplaireDao;
 
-    /**
-     *
-     * @return
-     */
-    @Override
-    public List<Exemplaire> findAll() {
-        return exemplaireDao.findAll();
-    }
-
-    /**
-     *
-     * @param exemplaires
-     * @return
-     */
-    @Override
-    public List<Exemplaire> save(List<Exemplaire> exemplaires) {
-        return exemplaireDao.saveAll(exemplaires);
-    }
-
-    /**
-     *
-     * @param idExemplaire
-     * @return
-     */
-    @Override
-    public Exemplaire findById(int idExemplaire) {
-        return exemplaireDao.findById(idExemplaire);
-    }
-
-    /**
-     *
-     * @param idOuvrage
-     * @return
-     */
-    @Override
-    public List<Exemplaire> findAllByOuvrageId(int idOuvrage) {
-        return exemplaireDao.findAllByOuvrageId(idOuvrage);
-    }
 
     /**
      *
