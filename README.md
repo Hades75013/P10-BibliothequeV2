@@ -19,7 +19,7 @@ Cette application a été développée avec :
 
 ## Déploiement
 
-* La source du projet est hérbergée sur GitHub à l'adresse : https://github.com/Hades75013/P7-Bibliotheque.git
+* La source du projet est hérbergée sur GitHub à l'adresse : https://github.com/Hades75013/P7-Bibliotheque
 * Les dépendances du projet sont gérées par Apache Maven.
 * L'application se builde par Maven au format .war.
 

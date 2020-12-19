@@ -16,7 +16,6 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort.Direction;
@@ -25,7 +24,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.mail.internet.MimeMessage;
-import javax.sql.DataSource;
 import java.util.*;
 
 @Configuration
@@ -45,7 +43,7 @@ public class SpringBatch {
     PretDao pretDao;
 
 
-    @Scheduled(cron = "0 10 11 * * *")
+    @Scheduled(cron = "0 26 10 * * *")
     public void relance() throws Exception {
 
         System.out.println("BatchJob Started at :" + new Date());
@@ -85,16 +83,6 @@ public class SpringBatch {
                 .processor(myProcessor)
                 .writer(myWriter)
                 .build();
-    }
-
-
-    public DataSource getDataSource() {
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/p7-microservice?serverTimezone=UTC&useLegacyDatetimeCode=false");
-        dataSourceBuilder.username("root");
-        dataSourceBuilder.password("7513");
-        return dataSourceBuilder.build();
     }
 
 

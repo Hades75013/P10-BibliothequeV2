@@ -114,12 +114,10 @@ public class IPretServiceImpl implements IPretService{
     public Pret validerPret(int idPret) {
 
         Pret pret = pretDao.findById(idPret);
-        Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(pret.getOuvrage().getId());
 
-        Exemplaire exemplaire = exemplaireService.getExemplairesDisponiblesByOuvrageId(ouvrage.getId()).get(0);
-        pret.setExemplaire(exemplaire);
-        ouvrage.setNbExemplairesDispo(exemplaireService.getExemplairesDisponiblesByOuvrageId(ouvrage.getId()).size()-1);
-        exemplaire.setDisponible(false);
+        pret.setExemplaire(exemplaireService.getExemplairesDisponiblesByOuvrageId(pret.getOuvrage().getId()).get(0));
+        pret.getExemplaire().setDisponible(false);
+        pret.getOuvrage().setNbExemplairesDispo(exemplaireService.getExemplairesDisponiblesByOuvrageId(pret.getOuvrage().getId()).size()-1);
 
         Calendar cal = Calendar.getInstance();
         Date debutPret = cal.getTime();
@@ -134,9 +132,9 @@ public class IPretServiceImpl implements IPretService{
 
         pretDao.save(pret);
 
-        if(exemplaireService.getExemplairesDisponiblesByOuvrageId(ouvrage.getId()).isEmpty()){
-            ouvrage.setStatut(false);
-            ouvrageService.save(ouvrage);
+        if(exemplaireService.getExemplairesDisponiblesByOuvrageId(pret.getOuvrage().getId()).isEmpty()){
+            pret.getOuvrage().setStatut(false);
+            ouvrageService.save(pret.getOuvrage());
         }
 
 
