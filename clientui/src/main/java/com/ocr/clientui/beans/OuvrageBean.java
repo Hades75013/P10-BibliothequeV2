@@ -23,12 +23,17 @@ public class OuvrageBean implements Serializable {
 
     private String nombrePages;
 
+    private int nbExemplairesTotal;
+
     private int nbExemplairesDispo;
 
     private boolean statut;
 
     @JsonProperty("exemplaires")
     private List<ExemplaireBean> exemplaires;
+
+    @JsonProperty("listeAttenteReservation")
+    private List <ListeAttenteReservationBean> listeAttenteReservations;
 
     @JsonProperty("prets")
     private List<PretBean> prets;
@@ -38,7 +43,8 @@ public class OuvrageBean implements Serializable {
     }
 
     public OuvrageBean(int id, String titre, String auteur, String genre, String cote, String anneeEdition, String nombrePages,
-                       int nbExemplairesDispo, boolean statut, List<ExemplaireBean> exemplaires, List<PretBean> prets) {
+                       int nbExemplairesTotal, int nbExemplairesDispo, boolean statut, List<ExemplaireBean> exemplaires,
+                       List<ListeAttenteReservationBean> listeAttenteReservations, List<PretBean> prets) {
         this.id = id;
         this.titre = titre;
         this.auteur = auteur;
@@ -46,9 +52,11 @@ public class OuvrageBean implements Serializable {
         this.cote = cote;
         this.anneeEdition = anneeEdition;
         this.nombrePages = nombrePages;
+        this.nbExemplairesTotal = nbExemplairesTotal;
         this.nbExemplairesDispo = nbExemplairesDispo;
         this.statut = statut;
         this.exemplaires = exemplaires;
+        this.listeAttenteReservations = listeAttenteReservations;
         this.prets = prets;
     }
 
@@ -108,6 +116,14 @@ public class OuvrageBean implements Serializable {
         this.nombrePages = nombrePages;
     }
 
+    public int getNbExemplairesTotal() {
+        return nbExemplairesTotal;
+    }
+
+    public void setNbExemplairesTotal(int nbExemplairesTotal) {
+        this.nbExemplairesTotal = nbExemplairesTotal;
+    }
+
     public int getNbExemplairesDispo() {
         return nbExemplairesDispo;
     }
@@ -130,6 +146,14 @@ public class OuvrageBean implements Serializable {
 
     public void setExemplaires(List<ExemplaireBean> exemplaires) {
         this.exemplaires = exemplaires;
+    }
+
+    public List<ListeAttenteReservationBean> getListeAttenteReservations() {
+        return listeAttenteReservations;
+    }
+
+    public void setListeAttenteReservations(List<ListeAttenteReservationBean> listeAttenteReservations) {
+        this.listeAttenteReservations = listeAttenteReservations;
     }
 
     public List<PretBean> getPrets() {

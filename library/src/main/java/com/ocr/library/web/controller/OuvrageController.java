@@ -1,6 +1,7 @@
 package com.ocr.library.web.controller;
 
 
+import com.ocr.library.beans.UtilisateurBean;
 import com.ocr.library.model.Ouvrage;
 import com.ocr.library.service.exemplaire.IExemplaireService;
 import com.ocr.library.service.ouvrage.IOuvrageService;
@@ -21,6 +22,13 @@ public class OuvrageController {
     private IExemplaireService exemplaireService;
 
 
+
+    @GetMapping(value="/ResaListeAttente/{idOuvrage}")
+    public List afficherListeAttenteOuvrage(@PathVariable ("idOuvrage") int idOuvrage){
+
+
+        return ouvrageService.afficherUnOuvrage(idOuvrage).getListeAttenteReservations();
+    }
 
     @GetMapping(value="/Ouvrages")
     public List <Ouvrage> listeOuvrages(){

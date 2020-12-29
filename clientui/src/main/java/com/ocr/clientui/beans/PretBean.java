@@ -33,6 +33,9 @@ public class PretBean implements Serializable {
     @JsonProperty("ouvrage")
     private OuvrageBean ouvrage;
 
+    public PretBean() {
+    }
+
     public PretBean(int id, Integer idUtilisateur, Date dateReservation, Date dateDebut, Date dateFin, Date dateRetour,
                     PretStatutEnumBean statut, boolean prolongeable, ExemplaireBean exemplaire, OuvrageBean ouvrage) {
         this.id = id;
@@ -134,6 +137,11 @@ public class PretBean implements Serializable {
     public void setOuvrage(OuvrageBean ouvrage) {
         this.ouvrage = ouvrage;
     }
+
+    public boolean isSurListe() {
+        return PretStatutEnumBean.SUR_LISTE.equals(this.statut);
+    }
+
 
     public boolean isEnAttente() {
         return PretStatutEnumBean.EN_ATTENTE.equals(this.statut);

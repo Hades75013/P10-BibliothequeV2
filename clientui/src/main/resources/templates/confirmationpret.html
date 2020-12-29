@@ -19,13 +19,15 @@
     <div class="container">
 
         <div class="panel panel-default">
-
             <div class="panel-heading">
-                <span class="green"><strong>Nous vous confirmons le pret de l'ouvrage demandé</strong></span>
+                <span class="green"><strong>Nous vous confirmons le prêt de l'ouvrage demandé par le lecteur</strong></span>
             </div>
-
             <div class="panel-body">
-                <label>Voici le recapitulatif de votre pret en cours</label><br>
+                <label>Voici le récapitulatif du prêt en cours</label><br>
+                <label>Nom : </label>
+                <label th:text="${utilisateur.nom}"></label><br>
+                <label>Prénom : </label>
+                <label th:text="${utilisateur.prenom}"></label><br>
                 <label>Date de début : </label>
                 <label th:text="${pret.dateDebut}"></label><br>
                 <label>Date de fin : </label>
@@ -38,9 +40,7 @@
                 <label th:text="${pret.statut}"></label><br>
                 <label>Prolongeable : </label>
                 <label th:text="${pret.prolongeable}"></label><br>
-
             </div>
-
         </div>
 
     </div>

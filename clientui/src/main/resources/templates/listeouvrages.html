@@ -75,6 +75,7 @@
                         </td>
                         <td sec:authorize="hasAuthority('USER')" th:switch="${ouvrage.statut}" >
                             <p th:case="true" ><a th:href="@{/DemanderPret(idOuvrage=${ouvrage.id})}" method="get" class="btn btn-primary"><span class="glyphicon glyphicon-book"></span></a></p>
+                            <p th:case="false" ><a th:href="@{/DemanderPret(idOuvrage=${ouvrage.id})}" method="get" class="btn btn-primary"><span class="glyphicon glyphicon-th-list"></span></a></p>
                         </td>
                     </tr>
                 </tbody>

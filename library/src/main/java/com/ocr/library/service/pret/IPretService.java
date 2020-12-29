@@ -2,7 +2,6 @@ package com.ocr.library.service.pret;
 
 import com.ocr.library.model.Pret;
 
-import java.util.Date;
 import java.util.List;
 
 public interface IPretService {
@@ -24,4 +23,6 @@ public interface IPretService {
     Pret retourPret(int idPret);
 
     Pret prolongationPret(int idPret);
+
+    Pret annulerPret(int idPret);
 }

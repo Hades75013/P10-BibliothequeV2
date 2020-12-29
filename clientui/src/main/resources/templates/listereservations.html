@@ -2,8 +2,7 @@
 <html
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{accueil}"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">
+        layout:decorate="~{accueil}">
 
 <head>
     <meta charset="utf-8" />
@@ -50,17 +49,20 @@
                 <thead>
                     <tr>
                         <th>Ouvrage</th>
-                        <th>Nombre d'exemplaires</th>
+                        <th>Nombre d'exemplaires disponibles</th>
                         <th>Date de réservation</th>
                         <th>Statut</th>
+                        <th>Annuler</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="resa:${listeResasUtilisateur}">
                         <td th:text="${resa.ouvrage.titre}"></td>
-                        <td th:text="${resa.ouvrage.exemplaires.size()}"></td>
+                        <td th:text="${resa.ouvrage.nbExemplairesDispo}"></td>
                         <td th:text="${resa.dateReservation}"></td>
                         <td th:text="${resa.statut}"></td>
+                        <td><a th:href="@{/SupprimerResa(idPret=${resa.id})}"><span class="glyphicon glyphicon-remove"></span></a></td>
                     </tr>
                 </tbody>
             </table>

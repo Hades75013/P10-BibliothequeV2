@@ -228,8 +228,11 @@ public class ClientUIController {
 
         libraryProxyService.validerPret(idPret);
         PretBean pret = libraryProxyService.afficherUnPret(idPret);
+        UtilisateurBean utilisateur = utilisateurProxyService.recupererUtilisateur(pret.getIdUtilisateur());
 
         model.addAttribute("pret", pret);
+        model.addAttribute("utilisateur", utilisateur);
+
 
         return "confirmationpret";
     }
@@ -244,6 +247,7 @@ public class ClientUIController {
         return "confirmationprolongation";
 
     }
+
     @GetMapping(value="/RetourPret")
     public String finPret(int idPret, Model model){
 
@@ -257,5 +261,12 @@ public class ClientUIController {
 
     }
 
+    @GetMapping(value="/SupprimerResa")
+    public String SuppressionResa(int idPret){
+
+        libraryProxyService.annulerPret(idPret);
+
+        return "redirect:/ResasUtilisateur";
+    }
 
 }

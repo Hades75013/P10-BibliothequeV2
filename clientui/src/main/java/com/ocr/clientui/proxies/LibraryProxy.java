@@ -61,4 +61,7 @@ public interface LibraryProxy {
     @PutMapping(value="/ProlongationPret/{idPret}")
     PretBean prolongationPret(@PathVariable("idPret") int idPret);
 
+    @DeleteMapping(value="/Pret/{idPret}")
+    PretBean annulerPret(@PathVariable("idPret") int idPret);
+
 }

@@ -148,6 +148,10 @@ public class Pret {
         this.ouvrage = ouvrage;
     }
 
+    public boolean isSurListe() {
+        return PretStatutEnum.SUR_LISTE.equals(this.statut);
+    }
+
     public boolean isEnAttente() {
         return PretStatutEnum.EN_ATTENTE.equals(this.statut);
     }

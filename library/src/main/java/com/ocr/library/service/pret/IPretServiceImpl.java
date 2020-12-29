@@ -1,17 +1,18 @@
 package com.ocr.library.service.pret;
 
 
+import com.ocr.library.beans.UtilisateurBean;
 import com.ocr.library.dao.PretDao;
-import com.ocr.library.model.Exemplaire;
-import com.ocr.library.model.Ouvrage;
-import com.ocr.library.model.Pret;
-import com.ocr.library.model.PretStatutEnum;
+import com.ocr.library.model.*;
 import com.ocr.library.service.exemplaire.IExemplaireService;
+import com.ocr.library.service.listeAttenteReservation.IListeAttenteReservationService;
 import com.ocr.library.service.ouvrage.IOuvrageService;
+import com.ocr.library.service.utilisateurbean.IUtilisateurBeanService;
 import com.ocr.library.web.exceptions.PretIntrouvableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,14 @@ public class IPretServiceImpl implements IPretService{
 
     @Autowired
     IExemplaireService exemplaireService;
+
+    @Autowired
+    IUtilisateurBeanService utilisateurBeanService;
+
+    @Autowired
+    IListeAttenteReservationService listeAttenteReservationService;
+
+
 
     /**
      *
@@ -89,18 +98,59 @@ public class IPretServiceImpl implements IPretService{
     public Pret demanderPret(int idOuvrage,int idUtilisateur) {
 
         Pret pret = new Pret();
+        Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(idOuvrage);
+        UtilisateurBean utilisateur = utilisateurBeanService.findById(idUtilisateur);
+
         Calendar cal = Calendar.getInstance();
         Date dateReservation = cal.getTime();
+
         pret.setDateReservation(dateReservation);
-
-        Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(idOuvrage);
-
         pret.setStatut(PretStatutEnum.EN_ATTENTE);
         pret.setProlongeable(false);
         pret.setOuvrage(ouvrage);
         pret.setIdUtilisateur(idUtilisateur);
 
+
+        //Si l'ouvrage est indisponible ( = aucun exemplaire disponible), alors on ajoute l'utilisateur à la liste d'attente de l'ouvrage !!!!! OK !!!!!
+        if (!ouvrage.isStatut()) {
+            pret.setStatut(PretStatutEnum.SUR_LISTE);
+
+            ListeAttenteReservation resa = new ListeAttenteReservation();
+            resa.setIdUtilisateur(utilisateur.getId());
+            resa.setOuvrage(ouvrage);
+            resa.setDateDemande(dateReservation);
+            listeAttenteReservationService.save(resa);
+
+            if (ouvrage.getListeAttenteReservations().size() < ouvrage.getNbExemplairesTotal()*2) {
+                ouvrage.getListeAttenteReservations().add(resa);
+                ouvrageService.save(ouvrage);
+            }
+
+        }
+
+
+        //verification si l'utilisateur n'a pas déjà une réservation en cours pour cet ouvrage !!!!! OK !!!!!
+        List<Pret> reservations = pretDao.findResasByUser(idUtilisateur);
+        for (Pret resa : reservations) {
+            if (resa.getOuvrage().getTitre().equals(pret.getOuvrage().getTitre())){
+                throw new PretIntrouvableException("Vous possédez déjà une reservation en attente pour cet ouvrage, datant du "
+                        +resa.getDateReservation()+ "veuillez patienter, la réponse de la Bibliothèque Municipale est imminente !");
+            }
+        }
+
+
+        //verification si l'utilisateur n'a pas déjà un emprunt en cours pour cet ouvrage !!!! OK !!!!!
+        List<Pret> prets = pretDao.findPretsByUser(idUtilisateur);
+        for (Pret emprunt : prets) {
+            if (emprunt.getOuvrage().getTitre().equals(pret.getOuvrage().getTitre())){
+                throw new PretIntrouvableException("Vous possédez déjà l'exemplaire N° "+emprunt.getExemplaire().getId()+
+                        " appartenant à cet ouvrage, veuillez d'abord retourner l'exemplaire en votre possession"+
+                        " pour pouvoir en emprunter un autre");
+            }
+        }
+
         pretDao.save(pret);
+
 
         return pret;
     }
@@ -194,4 +244,19 @@ public class IPretServiceImpl implements IPretService{
         return pretProlonge;
     }
 
+
+    /**
+     *
+     * @param idPret
+     * @return pret
+     */
+    @Override
+    public Pret annulerPret(int idPret) {
+
+        Pret pret = pretDao.findById(idPret);
+
+        pretDao.delete(pret);
+
+        return pret;
+    }
 }

@@ -66,6 +66,7 @@ public class PretController {
         pretService.validerPret(idPret);
 
     }
+
     @PutMapping(value="/RetourPret/{idPret}")
     public Pret retourPret(@PathVariable ("idPret") int idPret){
 
@@ -82,6 +83,13 @@ public class PretController {
         if (pret==null) throw new PretIntrouvableException("Le prêt avec l'id "+idPret+" est introuvable.");
 
         return pret;
+    }
+
+    @DeleteMapping(value="/Pret/{idPret}")
+    public void annulerPret(@PathVariable("idPret") int idPret){
+
+        pretService.annulerPret(idPret);
+
     }
 
 

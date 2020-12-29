@@ -81,12 +81,12 @@ public class ILibraryProxyServiceImpl implements ILibraryProxyService{
     //METHODES PRET
     /**
      *
-     * @param id
+     * @param idPret
      * @return
      */
     @Override
-    public PretBean afficherUnPret(int id) {
-        return libraryProxy.afficherUnPret(id);
+    public PretBean afficherUnPret(int idPret) {
+        return libraryProxy.afficherUnPret(idPret);
     }
 
     /**
@@ -141,22 +141,33 @@ public class ILibraryProxyServiceImpl implements ILibraryProxyService{
 
     /**
      *
-     * @param id
+     * @param idPret
      * @return
      */
     @Override
-    public PretBean retourPret(int id) {
-        return libraryProxy.retourPret(id);
+    public PretBean retourPret(int idPret) {
+        return libraryProxy.retourPret(idPret);
     }
 
     /**
      *
-     * @param id
+     * @param idPret
      * @return
      */
     @Override
-    public PretBean prolongationPret(int id) {
-        return libraryProxy.prolongationPret(id);
+    public PretBean prolongationPret(int idPret) {
+        return libraryProxy.prolongationPret(idPret);
+    }
+
+    /**
+     *
+     * @param idPret
+     * @return
+     */
+    @Override
+    public PretBean annulerPret(int idPret) {
+
+        return libraryProxy.annulerPret(idPret);
     }
 
 

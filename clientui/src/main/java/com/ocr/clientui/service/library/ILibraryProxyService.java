@@ -42,4 +42,8 @@ public interface ILibraryProxyService {
     PretBean retourPret(int id);
 
     PretBean prolongationPret(int id);
+
+    PretBean annulerPret(int idPret);
+
+
 }
