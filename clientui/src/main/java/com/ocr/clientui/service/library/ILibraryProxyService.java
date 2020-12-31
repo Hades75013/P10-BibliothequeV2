@@ -37,6 +37,8 @@ public interface ILibraryProxyService {
 
     PretBean demanderPret(int idOuvrage, int idUtilisateur);
 
+    PretBean reserverPret(int idOuvrage, int idUtilisateur);
+
     PretBean validerPret(int idPret);
 
     PretBean retourPret(int id);

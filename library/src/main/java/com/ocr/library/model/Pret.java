@@ -48,7 +48,9 @@ public class Pret {
     @ManyToOne
     private Ouvrage ouvrage;
 
-
+    @JsonManagedReference
+    @OneToOne
+    private ListeAttenteReservation resa;
 
     public Pret() {
     }

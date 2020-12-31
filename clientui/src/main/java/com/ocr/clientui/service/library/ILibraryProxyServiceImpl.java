@@ -131,6 +131,17 @@ public class ILibraryProxyServiceImpl implements ILibraryProxyService{
 
     /**
      *
+     * @param idOuvrage
+     * @param idUtilisateur
+     * @return
+     */
+    @Override
+    public PretBean reserverPret(int idOuvrage, int idUtilisateur) {
+        return libraryProxy.reserverPret(idOuvrage, idUtilisateur);
+    }
+
+    /**
+     *
      * @param idPret
      * @return
      */

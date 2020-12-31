@@ -15,8 +15,11 @@ public interface ListeAttenteReservationDao extends JpaRepository<ListeAttenteRe
     @Override
     List<ListeAttenteReservation> findAll();
 
-    @Query("select l from ListeAttenteReservation l where l.id = :id")
-    ListeAttenteReservation findById(int id);
+    @Override
+    void delete(ListeAttenteReservation resa);
+
+    @Query("select l from ListeAttenteReservation l where l.pret.id = :idPret")
+    ListeAttenteReservation findByIdPret(int idPret);
 
     @Query("select l from ListeAttenteReservation l where l.ouvrage.id = :idOuvrage")
     List<ListeAttenteReservation> findAllByOuvrageId(int idOuvrage);

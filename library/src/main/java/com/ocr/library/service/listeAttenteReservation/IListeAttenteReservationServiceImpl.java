@@ -19,6 +19,11 @@ public class IListeAttenteReservationServiceImpl implements IListeAttenteReserva
         return listeAttenteReservationDao.save(listeAttenteReservation);
     }
 
+    @Override
+    public void delete(ListeAttenteReservation listeAttenteReservation) {
+         listeAttenteReservationDao.delete(listeAttenteReservation);
+
+    }
 
     @Override
     public List<ListeAttenteReservation> listeAttenteResas() {
@@ -26,8 +31,8 @@ public class IListeAttenteReservationServiceImpl implements IListeAttenteReserva
     }
 
     @Override
-    public ListeAttenteReservation afficherUneResaListeAttente(int idListeAttenteReservation) {
-        return listeAttenteReservationDao.findById(idListeAttenteReservation);
+    public ListeAttenteReservation afficherUneResaListeAttentePret(int idPret) {
+        return listeAttenteReservationDao.findByIdPret(idPret);
     }
 
     @Override

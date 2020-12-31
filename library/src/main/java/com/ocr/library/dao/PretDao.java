@@ -25,14 +25,12 @@ public interface PretDao extends JpaRepository <Pret,Integer> {
     List<Pret> findAll();
 
     //trouver toutes les reservations ( = pret en attente) par utilisateur
-    @Query("select p from Pret p where p.statut = 'EN_ATTENTE' and p.idUtilisateur = :idUtilisateur order by p.dateReservation")
+    @Query("select p from Pret p where (p.statut = 'EN_ATTENTE' or p.statut = 'SUR_LISTE') and p.idUtilisateur = :idUtilisateur order by p.dateReservation")
     List<Pret> findResasByUser(int idUtilisateur);
 
     //trouver tous les prets par utilisateur
-    @Query("select p from Pret p where p.statut != 'EN_ATTENTE' and p.idUtilisateur = :idUtilisateur order by p.dateReservation")
+    @Query("select p from Pret p where p.statut != 'EN_ATTENTE' and p.statut != 'SUR_LISTE' and p.idUtilisateur = :idUtilisateur order by p.dateReservation")
     List<Pret> findPretsByUser(int idUtilisateur);
-
-    List<Pret> findAllByIdUtilisateurAndStatutOrderByDateReservation(int idUtilisateur, PretStatutEnum enAttente);
 
     //trouver tous les prets en retard
     @Query("select p from Pret p where p.dateRetour is null and trim(p.dateFin) < now()")

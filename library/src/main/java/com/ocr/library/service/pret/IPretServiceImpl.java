@@ -108,29 +108,11 @@ public class IPretServiceImpl implements IPretService{
         pret.setStatut(PretStatutEnum.EN_ATTENTE);
         pret.setProlongeable(false);
         pret.setOuvrage(ouvrage);
-        pret.setIdUtilisateur(idUtilisateur);
+        pret.setIdUtilisateur(utilisateur.getId());
 
 
-        //Si l'ouvrage est indisponible ( = aucun exemplaire disponible), alors on ajoute l'utilisateur à la liste d'attente de l'ouvrage !!!!! OK !!!!!
-        if (!ouvrage.isStatut()) {
-            pret.setStatut(PretStatutEnum.SUR_LISTE);
-
-            ListeAttenteReservation resa = new ListeAttenteReservation();
-            resa.setIdUtilisateur(utilisateur.getId());
-            resa.setOuvrage(ouvrage);
-            resa.setDateDemande(dateReservation);
-            listeAttenteReservationService.save(resa);
-
-            if (ouvrage.getListeAttenteReservations().size() < ouvrage.getNbExemplairesTotal()*2) {
-                ouvrage.getListeAttenteReservations().add(resa);
-                ouvrageService.save(ouvrage);
-            }
-
-        }
-
-
-        //verification si l'utilisateur n'a pas déjà une réservation en cours pour cet ouvrage !!!!! OK !!!!!
-        List<Pret> reservations = pretDao.findResasByUser(idUtilisateur);
+        //verification si l'utilisateur n'a pas déjà une réservation en cours pour cet ouvrage
+        List<Pret> reservations = pretDao.findResasByUser(utilisateur.getId());
         for (Pret resa : reservations) {
             if (resa.getOuvrage().getTitre().equals(pret.getOuvrage().getTitre())){
                 throw new PretIntrouvableException("Vous possédez déjà une reservation en attente pour cet ouvrage, datant du "
@@ -139,8 +121,8 @@ public class IPretServiceImpl implements IPretService{
         }
 
 
-        //verification si l'utilisateur n'a pas déjà un emprunt en cours pour cet ouvrage !!!! OK !!!!!
-        List<Pret> prets = pretDao.findPretsByUser(idUtilisateur);
+        //verification si l'utilisateur n'a pas déjà un emprunt en cours pour cet ouvrage
+        List<Pret> prets = pretDao.findPretsByUser(utilisateur.getId());
         for (Pret emprunt : prets) {
             if (emprunt.getOuvrage().getTitre().equals(pret.getOuvrage().getTitre())){
                 throw new PretIntrouvableException("Vous possédez déjà l'exemplaire N° "+emprunt.getExemplaire().getId()+
@@ -150,6 +132,67 @@ public class IPretServiceImpl implements IPretService{
         }
 
         pretDao.save(pret);
+
+
+        return pret;
+    }
+
+    /**
+     *
+     * @param idOuvrage
+     * @param idUtilisateur
+     * @return
+     */
+    @Override
+    public Pret reserverPret(int idOuvrage, int idUtilisateur) {
+
+        Pret pret = new Pret();
+        Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(idOuvrage);
+        UtilisateurBean utilisateur = utilisateurBeanService.findById(idUtilisateur);
+
+        pret.setOuvrage(ouvrage);
+        pret.setIdUtilisateur(utilisateur.getId());
+        pret.setStatut(PretStatutEnum.SUR_LISTE);
+        pret.setProlongeable(false);
+
+
+        //verification si l'utilisateur n'a pas déjà une réservation en cours pour cet ouvrage
+        List<Pret> reservations = pretDao.findResasByUser(utilisateur.getId());
+        for (Pret resa : reservations) {
+            if (resa.getOuvrage().getTitre().equals(pret.getOuvrage().getTitre())){
+                throw new PretIntrouvableException("Vous possédez déjà une reservation en attente pour cet ouvrage; veuillez patienter, la réponse de la Bibliothèque Municipale est imminente !");
+            }
+        }
+
+
+        //verification si l'utilisateur n'a pas déjà un emprunt en cours pour cet ouvrage
+        List<Pret> prets = pretDao.findPretsByUser(utilisateur.getId());
+        for (Pret emprunt : prets) {
+            if (emprunt.getOuvrage().getTitre().equals(pret.getOuvrage().getTitre())){
+                throw new PretIntrouvableException("Vous possédez déjà l'exemplaire N° "+emprunt.getExemplaire().getId()+
+                        " appartenant à cet ouvrage, veuillez d'abord retourner l'exemplaire en votre possession"+
+                        " pour pouvoir en emprunter un autre");
+            }
+        }
+
+        pretDao.save(pret);
+
+        // on vérifie que la liste d'attente de l'ouvrage n'est pas complète avant d'y ajouter la reservation
+        if (ouvrage.getListeAttenteReservations().size() < ouvrage.getNbExemplairesTotal()*2) {
+
+            Calendar cal = Calendar.getInstance();
+            Date dateDemande = cal.getTime();
+
+            ListeAttenteReservation resa = new ListeAttenteReservation();
+            resa.setIdUtilisateur(utilisateur.getId());
+            resa.setOuvrage(ouvrage);
+            resa.setPret(pret);
+            resa.setDateDemande(dateDemande);
+            listeAttenteReservationService.save(resa);
+
+            ouvrage.getListeAttenteReservations().add(resa);
+            ouvrageService.save(ouvrage);
+            }
 
 
         return pret;
@@ -251,12 +294,14 @@ public class IPretServiceImpl implements IPretService{
      * @return pret
      */
     @Override
-    public Pret annulerPret(int idPret) {
+    public void annulerPret(int idPret) {
 
         Pret pret = pretDao.findById(idPret);
+        ListeAttenteReservation resa = listeAttenteReservationService.afficherUneResaListeAttentePret(pret.getId());
 
+        pret.getOuvrage().getListeAttenteReservations().remove(resa);
+        listeAttenteReservationService.delete(resa);
         pretDao.delete(pret);
 
-        return pret;
     }
 }

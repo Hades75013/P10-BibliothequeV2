@@ -8,9 +8,11 @@ public interface IListeAttenteReservationService {
 
     ListeAttenteReservation save(ListeAttenteReservation listeAttenteReservation);
 
+    void delete(ListeAttenteReservation listeAttenteReservation);
+
     List<ListeAttenteReservation> listeAttenteResas();
 
-    ListeAttenteReservation afficherUneResaListeAttente(int idListeAttenteReservation);
+    ListeAttenteReservation afficherUneResaListeAttentePret(int idPret);
 
     List<ListeAttenteReservation> afficherListeAttenteResasOuvrage(int idOuvrage);
 

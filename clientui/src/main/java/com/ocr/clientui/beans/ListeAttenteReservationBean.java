@@ -16,15 +16,19 @@ public class ListeAttenteReservationBean implements Serializable {
     @JsonProperty("ouvrage")
     private OuvrageBean ouvrage;
 
+    @JsonProperty("pret")
+    private PretBean pret;
+
 
     public ListeAttenteReservationBean() {
     }
 
-    public ListeAttenteReservationBean(int id, Date dateDemande, Integer idUtilisateur, OuvrageBean ouvrage) {
+    public ListeAttenteReservationBean(int id, Date dateDemande, Integer idUtilisateur, OuvrageBean ouvrage, PretBean pret) {
         this.id = id;
         this.dateDemande = dateDemande;
         this.idUtilisateur = idUtilisateur;
         this.ouvrage = ouvrage;
+        this.pret = pret;
     }
 
     public int getId() {
@@ -57,5 +61,13 @@ public class ListeAttenteReservationBean implements Serializable {
 
     public void setOuvrage(OuvrageBean ouvrage) {
         this.ouvrage = ouvrage;
+    }
+
+    public PretBean getPret() {
+        return pret;
+    }
+
+    public void setPret(PretBean pret) {
+        this.pret = pret;
     }
 }

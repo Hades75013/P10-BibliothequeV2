@@ -223,6 +223,19 @@ public class ClientUIController {
         return "confirmationresa";
     }
 
+    @GetMapping(value="/ReserverPret")
+    public String ReservePret( int idOuvrage, Model model){
+
+        UtilisateurBean utilisateur = (UtilisateurBean) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        OuvrageBean ouvrage = libraryProxyService.afficherUnOuvrage(idOuvrage);
+
+        libraryProxyService.reserverPret(idOuvrage, utilisateur.getId());
+
+        model.addAttribute("ouvrage", ouvrage);
+
+        return "confirmationdemanderesa";
+    }
+
     @GetMapping(value="/ValiderPret")
     public String ValidationPret(int idPret, Model model){
 

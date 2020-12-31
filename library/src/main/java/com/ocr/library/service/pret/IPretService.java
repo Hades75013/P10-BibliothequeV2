@@ -18,11 +18,13 @@ public interface IPretService {
 
     Pret demanderPret(int idOuvrage, int idUtilisateur);
 
+    Pret reserverPret(int idOuvrage, int idUtilisateur);
+
     Pret validerPret(int idPret);
 
     Pret retourPret(int idPret);
 
     Pret prolongationPret(int idPret);
 
-    Pret annulerPret(int idPret);
+    void annulerPret(int idPret);
 }

@@ -23,14 +23,19 @@ public class ListeAttenteReservation {
     @ManyToOne
     private Ouvrage ouvrage;
 
+    @JsonManagedReference
+    @OneToOne
+    private Pret pret;
 
     public ListeAttenteReservation() {
     }
 
-    public ListeAttenteReservation(int id, Integer idUtilisateur, Ouvrage ouvrage) {
+    public ListeAttenteReservation(int id, Date dateDemande, Integer idUtilisateur, Ouvrage ouvrage, Pret pret) {
         this.id = id;
+        this.dateDemande = dateDemande;
         this.idUtilisateur = idUtilisateur;
         this.ouvrage = ouvrage;
+        this.pret = pret;
     }
 
     public int getId() {
@@ -65,5 +70,11 @@ public class ListeAttenteReservation {
         this.ouvrage = ouvrage;
     }
 
+    public Pret getPret() {
+        return pret;
+    }
 
+    public void setPret(Pret pret) {
+        this.pret = pret;
+    }
 }

@@ -60,6 +60,13 @@ public class PretController {
 
     }
 
+    @PostMapping(value="/ReserverPret/{idOuvrage}")
+    public void reserverPret(@PathVariable("idOuvrage") int idOuvrage,@RequestParam(value="idUtilisateur",required=false)int idUtilisateur){
+
+        pretService.reserverPret(idOuvrage,idUtilisateur);
+
+    }
+
     @PutMapping(value="/Pret/{idPret}")
     public void validerPret(@PathVariable("idPret") int idPret){
 

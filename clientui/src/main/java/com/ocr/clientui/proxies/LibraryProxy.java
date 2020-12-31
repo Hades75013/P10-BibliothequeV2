@@ -52,6 +52,9 @@ public interface LibraryProxy {
     @PostMapping(value="/Pret/{idOuvrage}")
     PretBean demanderPret(@PathVariable("idOuvrage") int idOuvrage, @RequestParam int idUtilisateur);
 
+    @PostMapping(value="/ReserverPret/{idOuvrage}")
+    PretBean reserverPret(@PathVariable("idOuvrage") int idOuvrage, @RequestParam int idUtilisateur);
+
     @PutMapping(value="/Pret/{idPret}")
     PretBean validerPret(@PathVariable("idPret") int idPret);
 
