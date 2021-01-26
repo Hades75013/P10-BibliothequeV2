@@ -13,6 +13,11 @@ public interface IEmailService {
 
     void envoiMailRetourPretSuivant () throws MessagingException;
 
+    void envoiMailRelanceProlongation() throws MessagingException;
+
+    void prolongeableFalse();
+
+
 
 
 }

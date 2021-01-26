@@ -65,6 +65,14 @@ public class IPretServiceImpl implements IPretService{
         return prets;
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
+    public List<Pret> listePretsEnCours() {
+        return pretDao.findPretsEnCours();
+    }
 
     /**
      *

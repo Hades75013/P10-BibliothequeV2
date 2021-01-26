@@ -5,6 +5,6 @@ public enum MailStatutEnum {
     ENVOYE,
     RESAKO,
     RESAOK,
-
+    PROLONGATION
 
 }

@@ -106,7 +106,7 @@ public class IEmailServiceImpl implements  IEmailService{
     }
 
     @Override
-    @Scheduled(cron = "0 * * * * *")
+    //@Scheduled(cron = "0 * * * * *")
     public void envoiMailRetourPretSuivant() throws MessagingException {
 
         List<Mail> mails = mailDao.afficherMailsEnvoyes();
@@ -138,6 +138,88 @@ public class IEmailServiceImpl implements  IEmailService{
 
         }
 
+    @Override
+    //@Scheduled(cron = "0 * * * * *")
+    public void envoiMailRelanceProlongation() throws MessagingException {
+
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("p7biblioadm@gmail.com");
+        mailSender.setPassword("p7biblioadm12345");
+
+        Properties mailProperties = mailSender.getJavaMailProperties();
+        mailProperties.put("mail.smtp.starttls.enable", "true");
+        mailProperties.put("mail.smtp.auth", "true");
+        mailProperties.put("mail.transport.protocol", "smtp");
+        mailProperties.put("mail.debug", "true");
+
+        MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        Calendar cal = Calendar.getInstance();
+        Date dateNow = cal.getTime();
+
+        List<Pret> pretsEnCours = pretService.listePretsEnCours();
+
+        for(Pret pret : pretsEnCours) {
+
+            Date debutPret = pret.getDateDebut();
+            cal.setTime(debutPret);
+            cal.add(Calendar.WEEK_OF_MONTH, 3);
+            Date debutPretPlus3Semaines = cal.getTime();
+
+            UtilisateurBean utilisateur = utilisateurBeanService.findById(pret.getIdUtilisateur());
+
+            if (dateNow.after(debutPretPlus3Semaines)) {
+                String texte = "Bonjour " + utilisateur.getPrenom() + ", nous vous rappelons qu'il vous reste une semaine pour pouvoir prolonger le prêt de l'ouvrage "+pret.getOuvrage().getTitre()+"."
+                        +" Passer ce délai, c'est à dire à la fin de votre période de prêt initiale, il ne vous sera plus possible de prolonger le prêt,"
+                        +" le moment sera alors venu de nous retourner rapidement l'exemplaire N° "+pret.getExemplaire().getId()+".";
+
+                helper.setFrom("p7biblioadm@gmail.com");
+                helper.setTo(utilisateur.getEmail());
+                helper.setSubject("Dépêchez-vous ! Il ne vous reste plus beaucoup de temps pour prolonger le prêt de l'ouvrage "+pret.getOuvrage().getTitre());
+                helper.setText(texte);
+
+                mailSender.send(message);
+
+                Mail mail = new Mail();
+                Date dateEnvoi = cal.getTime();
+
+                mail.setDateEnvoi(dateEnvoi);
+                mail.setIdUtilisateur(utilisateur.getId());
+                mail.setIdPret(pret.getId());
+                mail.setStatut(MailStatutEnum.PROLONGATION);
+
+                mailDao.save(mail);
+
+
+            }
+        }
+
+    }
+
+    @Override
+    //@Scheduled(cron = "0 * * * * *")
+    public void prolongeableFalse() {
+
+        Calendar cal = Calendar.getInstance();
+        Date dateNow = cal.getTime();
+
+        List<Pret> pretsEnCours = pretService.listePretsEnCours();
+
+        for(Pret pret : pretsEnCours) {
+            if(dateNow.after(pret.getDateFin())){
+
+                pret.setProlongeable(false);
+                pret.setStatut(PretStatutEnum.DEPASSE);
+                pretDao.save(pret);
+
+            }
+
+        }
+    }
 
 
 }

@@ -10,6 +10,8 @@ public interface IPretService {
 
     List<Pret> listePrets();
 
+    List<Pret> listePretsEnCours();
+
     Pret afficherUnPret(int idPret);
 
     List<Pret> afficherListePretsUtilisateur(int idUtilisateur);
