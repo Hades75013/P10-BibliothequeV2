@@ -56,7 +56,9 @@
                     <th>Année d'édition</th>
                     <th>Côte</th>
                     <th>Nb de pages</th>
-                    <th>Nb d'exemplaires dispos</th>
+                    <th th:if="${ouvrage.statut==true}">Nb d'exemplaires dispos</th>
+                    <th th:if="${ouvrage.statut==false}">Nb de lecteurs en attente</th>
+                    <th th:if="${ouvrage.statut==false}">Date retour la plus proche</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -64,7 +66,9 @@
                     <td th:text="${ouvrage.anneeEdition}"></td>
                     <td th:text="${ouvrage.cote}"></td>
                     <td th:text="${ouvrage.nombrePages}"></td>
-                    <td th:text="${ouvrage.nbExemplairesDispo}"></td>
+                    <td th:if="${ouvrage.statut==true}" th:text="${ouvrage.nbExemplairesDispo}"></td>
+                    <td th:if="${ouvrage.statut==false}" th:text="${nbPersonnesListeAttente}"></td>
+                    <td th:if="${ouvrage.statut==false}" th:text="${ouvrage.dateRetourLaPlusProche}"></td>
                 </tr>
                 </tbody>
             </table>

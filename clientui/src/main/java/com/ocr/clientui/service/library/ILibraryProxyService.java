@@ -2,6 +2,8 @@ package com.ocr.clientui.service.library;
 
 import com.ocr.clientui.beans.OuvrageBean;
 import com.ocr.clientui.beans.PretBean;
+import com.ocr.clientui.beans.ReservationListeAttenteBean;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
@@ -10,6 +12,9 @@ import java.util.List;
 
 public interface ILibraryProxyService {
 
+
+
+    List <ReservationListeAttenteBean> afficherListeAttenteResasOuvrage(int idOuvrage);
 
     List<OuvrageBean> listeOuvrages();
 
@@ -33,11 +38,15 @@ public interface ILibraryProxyService {
 
     List<PretBean> listePretsByUtilisateur(int idUtilisateur);
 
-    List<PretBean> listeResasByUtilisateur(int idUtilisateur);
+    List<ReservationListeAttenteBean> listeResasByUtilisateur(int idUtilisateur);
+
+    List<PretBean> listeDemandesPretByUtilisateur(int idUtilisateur);
 
     PretBean demanderPret(int idOuvrage, int idUtilisateur);
 
     PretBean reserverPret(int idOuvrage, int idUtilisateur);
+
+    Date afficherDateRetourLaPlusProche(int idOuvrage);
 
     PretBean validerPret(int idPret);
 
@@ -47,5 +56,10 @@ public interface ILibraryProxyService {
 
     PretBean annulerPret(int idPret);
 
+    ReservationListeAttenteBean annulerResa(int idReservationListeAttente);
+
+    ReservationListeAttenteBean afficherResaByPret(int idPret);
+
+    List<ReservationListeAttenteBean> afficherToutesReservations();
 
 }

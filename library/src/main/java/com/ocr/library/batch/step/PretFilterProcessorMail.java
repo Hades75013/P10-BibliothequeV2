@@ -48,7 +48,7 @@ public class PretFilterProcessorMail implements ItemProcessor<Pret, MimeMessage>
                        ", vous etes en retard pour le retour de votre prêt No "+pret.getId()+
                        " concernant l'ouvrage "+pret.getOuvrage().getTitre()+
                        ". En effet, votre date échéance pour ce prêt était le "+pret.getDateFin()+
-                       ", merci de contacter la Biblliothèque Municipale.";
+                       ", merci de contacter la Bibliothèque Municipale.";
 
         helper.setFrom("p7biblioadm@gmail.com");
         helper.setTo(utilisateur.getEmail());

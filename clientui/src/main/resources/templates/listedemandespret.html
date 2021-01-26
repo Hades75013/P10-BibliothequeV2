@@ -43,33 +43,29 @@
 
     <br>
 
-    <div class="container" th:if="${listeResasUtilisateur.isEmpty()}">
-        <h4><strong>Aucune reservation actuellement</strong></h4>
+    <div class="container" th:if="${listeDemandePretByUtilisateur.isEmpty()}">
+        <h4><strong>Aucune demande de prêt actuellement</strong></h4>
     </div>
 
-    <div id="listeResas" class="container" th:if="!${listeResasUtilisateur.isEmpty()}">
+    <div id="listeResas" class="container" th:if="!${listeDemandePretByUtilisateur.isEmpty()}">
 
         <div class="table-responsive col-lg-12 col-md-10 col-xs-9">
-            <div id="titreTableau"><h4><strong> MES RESERVATIONS </strong></h4></div>
+            <div id="titreTableau"><h4><strong> MES DEMANDES DE PRÊT </strong></h4></div>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Ouvrage</th>
                         <th>Nombre d'ex. disponibles</th>
-                        <th>Date de demande</th>
-                        <th>Date retour + proche</th>
-                        <th>Position</th>
-                        <th>Annuler Reservation</th>
+                        <th>Date de réservation</th>
+                        <th>Annuler demande</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="resa:${listeResasUtilisateur}">
-                        <td th:text="${resa.ouvrage.titre}"></td>
-                        <td th:text="${resa.ouvrage.nbExemplairesDispo}"></td>
-                        <td th:text="${resa.dateDemande}"></td>
-                        <td th:text="${resa.ouvrage.dateRetourLaPlusProche}"></td>
-                        <td th:text="${resa.position}"></td>
-                        <td><a th:href="@{/AnnulerResa(idReservationListeAttente=${resa.id})}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                    <tr th:each="pret:${listeDemandePretByUtilisateur}">
+                        <td th:text="${pret.ouvrage.titre}"></td>
+                        <td th:text="${pret.ouvrage.nbExemplairesDispo}"></td>
+                        <td th:text="${pret.dateReservation}"></td>
+                        <td><a th:href="@{/AnnulerPret(idPret=${pret.id})}"><span class="glyphicon glyphicon-remove"></span></a></td>
                     </tr>
                 </tbody>
             </table>

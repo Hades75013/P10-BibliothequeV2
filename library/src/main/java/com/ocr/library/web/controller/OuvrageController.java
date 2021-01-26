@@ -1,10 +1,11 @@
 package com.ocr.library.web.controller;
 
 
-import com.ocr.library.beans.UtilisateurBean;
 import com.ocr.library.model.Ouvrage;
+import com.ocr.library.model.ReservationListeAttente;
 import com.ocr.library.service.exemplaire.IExemplaireService;
 import com.ocr.library.service.ouvrage.IOuvrageService;
+import com.ocr.library.service.reservationListeAttente.IReservationListeAttenteService;
 import com.ocr.library.web.exceptions.OuvrageIntrouvableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +22,10 @@ public class OuvrageController {
     @Autowired
     private IExemplaireService exemplaireService;
 
+    @Autowired
+    private IReservationListeAttenteService reservationListeAttenteService;
 
 
-    @GetMapping(value="/ResaListeAttente/{idOuvrage}")
-    public List afficherListeAttenteOuvrage(@PathVariable ("idOuvrage") int idOuvrage){
-
-
-        return ouvrageService.afficherUnOuvrage(idOuvrage).getListeAttenteReservations();
-    }
 
     @GetMapping(value="/Ouvrages")
     public List <Ouvrage> listeOuvrages(){
@@ -38,11 +35,11 @@ public class OuvrageController {
         return ouvrages;
     }
 
-    @GetMapping(value="/Ouvrage/{id}")
-    public Ouvrage afficherUnOuvrage(@PathVariable int id){
+    @GetMapping(value="/Ouvrage/{idOuvrage}")
+    public Ouvrage afficherUnOuvrage(@PathVariable int idOuvrage){
 
-        Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(id);
-        if (ouvrage==null) throw new OuvrageIntrouvableException("L'ouvrage avec l'id "+id+" est introuvable.");
+        Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(idOuvrage);
+        if (ouvrage==null) throw new OuvrageIntrouvableException("L'ouvrage avec l'id "+idOuvrage+" est introuvable.");
 
         return ouvrage;
     }
@@ -85,8 +82,14 @@ public class OuvrageController {
 
     }
 
+    @GetMapping(value="/ResaListeAttente/{idOuvrage}")
+    public List afficherListeAttenteResasOuvrage(@PathVariable ("idOuvrage") int idOuvrage){
 
-}
+        return reservationListeAttenteService.afficherListeAttenteResasOuvrage(idOuvrage);
+    }
+
+
+    }
 
 
 

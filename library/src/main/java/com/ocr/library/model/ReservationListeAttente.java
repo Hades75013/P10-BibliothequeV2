@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class ListeAttenteReservation {
+public class ReservationListeAttente {
 
     @Id
     @GeneratedValue
@@ -16,24 +16,34 @@ public class ListeAttenteReservation {
     @Column(name="dateDemande")
     private Date dateDemande;
 
+
     @Column
     private Integer idUtilisateur;
+
+    @Column
+    private Integer position;
+
+   /* @Column(name="pret_id")
+    private int pretID;
+*/
+    @JsonManagedReference
+    @OneToOne
+    private Pret pret;
+
 
     @JsonManagedReference
     @ManyToOne
     private Ouvrage ouvrage;
 
-    @JsonManagedReference
-    @OneToOne
-    private Pret pret;
 
-    public ListeAttenteReservation() {
+    public ReservationListeAttente() {
     }
 
-    public ListeAttenteReservation(int id, Date dateDemande, Integer idUtilisateur, Ouvrage ouvrage, Pret pret) {
+    public ReservationListeAttente(int id, Date dateDemande, Integer idUtilisateur, Integer position, Ouvrage ouvrage, Pret pret) {
         this.id = id;
         this.dateDemande = dateDemande;
         this.idUtilisateur = idUtilisateur;
+        this.position = position;
         this.ouvrage = ouvrage;
         this.pret = pret;
     }
@@ -60,6 +70,14 @@ public class ListeAttenteReservation {
 
     public void setIdUtilisateur(Integer idUtilisateur) {
         this.idUtilisateur = idUtilisateur;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public Ouvrage getOuvrage() {

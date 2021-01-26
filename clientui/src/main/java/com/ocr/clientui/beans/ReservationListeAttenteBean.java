@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ListeAttenteReservationBean implements Serializable {
+public class ReservationListeAttenteBean implements Serializable {
 
 
     private int id;
@@ -13,6 +13,8 @@ public class ListeAttenteReservationBean implements Serializable {
 
     private Integer idUtilisateur;
 
+    private Integer position;
+
     @JsonProperty("ouvrage")
     private OuvrageBean ouvrage;
 
@@ -20,13 +22,15 @@ public class ListeAttenteReservationBean implements Serializable {
     private PretBean pret;
 
 
-    public ListeAttenteReservationBean() {
+    public ReservationListeAttenteBean() {
     }
 
-    public ListeAttenteReservationBean(int id, Date dateDemande, Integer idUtilisateur, OuvrageBean ouvrage, PretBean pret) {
+    public ReservationListeAttenteBean(int id, Date dateDemande, Integer idUtilisateur, Integer position,
+                                       OuvrageBean ouvrage, PretBean pret) {
         this.id = id;
         this.dateDemande = dateDemande;
         this.idUtilisateur = idUtilisateur;
+        this.position = position;
         this.ouvrage = ouvrage;
         this.pret = pret;
     }
@@ -53,6 +57,14 @@ public class ListeAttenteReservationBean implements Serializable {
 
     public void setIdUtilisateur(Integer idUtilisateur) {
         this.idUtilisateur = idUtilisateur;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public OuvrageBean getOuvrage() {

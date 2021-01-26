@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 
@@ -109,8 +110,12 @@ public class ClientUIController {
     public String OuvragesDetails (int idOuvrage, Model model){
 
         OuvrageBean ouvrage = libraryProxyService.afficherUnOuvrage(idOuvrage);
+        List<ReservationListeAttenteBean> listeAttente = libraryProxyService.afficherListeAttenteResasOuvrage(idOuvrage);
 
         model.addAttribute("ouvrage",ouvrage);
+        model.addAttribute("nbPersonnesListeAttente",listeAttente.size());
+
+
 
         return "ouvragedetails";
     }
@@ -177,15 +182,29 @@ public class ClientUIController {
     }
 
     @GetMapping(value="/ResasUtilisateur")
-    public String listeResaByUser ( Model model){
+    public String listeResaByUser (Model model){
 
         UtilisateurBean utilisateur = (UtilisateurBean) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<PretBean> resas = libraryProxyService.listeResasByUtilisateur(utilisateur.getId());
+        List<ReservationListeAttenteBean> resas = libraryProxyService.listeResasByUtilisateur(utilisateur.getId());
 
         model.addAttribute("listeResasUtilisateur", resas);
         model.addAttribute("utilisateur",utilisateur );
 
+
         return "listereservations";
+    }
+
+    @GetMapping(value="/DemandeDePretsUtilisateur")
+    public String listeDemandesPretByUser (Model model){
+
+        UtilisateurBean utilisateur = (UtilisateurBean) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<PretBean> demandesPret = libraryProxyService.listeDemandesPretByUtilisateur(utilisateur.getId());
+
+        model.addAttribute("listeDemandePretByUtilisateur", demandesPret);
+        model.addAttribute("utilisateur",utilisateur );
+
+
+        return "listedemandespret";
     }
 
     @GetMapping(value="/PretsUtilisateur")
@@ -200,16 +219,31 @@ public class ClientUIController {
         return "listeprets";
     }
 
-    @GetMapping(value="/Prets")
-    public String AllPrets (Model model){
+    @GetMapping(value="/DemandeDePretsAdmin")
+    public String listeDemandesPretAdmin (Model model){
 
-        List<PretBean> prets = libraryProxyService.listePrets();
+        UtilisateurBean utilisateur = (UtilisateurBean) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<PretBean> demandesPretAdmin = libraryProxyService.listePrets();
 
-        model.addAttribute("listePrets", prets);
+        model.addAttribute("listeDemandesPretAdmin", demandesPretAdmin);
+        model.addAttribute("utilisateur",utilisateur );
 
-        return "listeprets";
+
+        return "listedemandepretsadmin";
     }
 
+    @GetMapping(value="/DemandeDeReservationsAdmin")
+    public String listeDemandesResaAdmin (Model model){
+
+        UtilisateurBean utilisateur = (UtilisateurBean) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<ReservationListeAttenteBean> demandesReservationsAdmin = libraryProxyService.afficherToutesReservations();
+
+        model.addAttribute("listeDemandesReservationsAdmin", demandesReservationsAdmin);
+        model.addAttribute("utilisateur",utilisateur );
+
+
+        return "listedemandereservationsadmin";
+    }
     @GetMapping(value="/DemanderPret")
     public String DemandePret( int idOuvrage, Model model){
 
@@ -220,7 +254,7 @@ public class ClientUIController {
         OuvrageBean ouvrage = libraryProxyService.afficherUnOuvrage(idOuvrage);
         model.addAttribute("ouvrage", ouvrage);
 
-        return "confirmationresa";
+        return "confirmationdemandepret";
     }
 
     @GetMapping(value="/ReserverPret")
@@ -231,7 +265,10 @@ public class ClientUIController {
 
         libraryProxyService.reserverPret(idOuvrage, utilisateur.getId());
 
+        List<ReservationListeAttenteBean> listeAttente = libraryProxyService.afficherListeAttenteResasOuvrage(idOuvrage);
+
         model.addAttribute("ouvrage", ouvrage);
+        model.addAttribute("listeAttente", listeAttente);
 
         return "confirmationdemanderesa";
     }
@@ -240,14 +277,32 @@ public class ClientUIController {
     public String ValidationPret(int idPret, Model model){
 
         libraryProxyService.validerPret(idPret);
+
+        PretBean pret = libraryProxyService.afficherUnPret(idPret);
+        UtilisateurBean utilisateur = utilisateurProxyService.recupererUtilisateur(pret.getIdUtilisateur());
+        List<ReservationListeAttenteBean> resas = libraryProxyService.afficherListeAttenteResasOuvrage(pret.getOuvrage().getId());
+        ReservationListeAttenteBean reservation = libraryProxyService.afficherResaByPret(idPret);
+
+        model.addAttribute("pret", pret);
+        model.addAttribute("reservation", reservation);
+        model.addAttribute("utilisateur", utilisateur);
+        model.addAttribute("listeAttenteResasByOuvrage", resas);
+
+        return "confirmationpret";
+    }
+
+    @GetMapping(value="/ValiderReservation")
+    public String ValidationResa(int idPret, Model model){
+
+        libraryProxyService.validerPret(idPret);
+
         PretBean pret = libraryProxyService.afficherUnPret(idPret);
         UtilisateurBean utilisateur = utilisateurProxyService.recupererUtilisateur(pret.getIdUtilisateur());
 
         model.addAttribute("pret", pret);
         model.addAttribute("utilisateur", utilisateur);
 
-
-        return "confirmationpret";
+        return "confirmationresa";
     }
 
     @GetMapping(value="/ProlongerPret")
@@ -274,10 +329,18 @@ public class ClientUIController {
 
     }
 
-    @GetMapping(value="/SupprimerResa")
-    public String SuppressionResa(int idPret){
+    @GetMapping(value="/AnnulerPret")
+    public String SuppressionPret(int idPret){
 
         libraryProxyService.annulerPret(idPret);
+
+        return "redirect:/DemandeDePretsUtilisateur";
+    }
+
+    @GetMapping(value="/AnnulerResa")
+    public String SuppressionResa(int idReservationListeAttente){
+
+        libraryProxyService.annulerResa(idReservationListeAttente);
 
         return "redirect:/ResasUtilisateur";
     }
