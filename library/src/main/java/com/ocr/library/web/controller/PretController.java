@@ -2,7 +2,9 @@ package com.ocr.library.web.controller;
 
 
 import com.ocr.library.model.Pret;
+import com.ocr.library.model.ReservationListeAttente;
 import com.ocr.library.service.pret.IPretService;
+import com.ocr.library.service.reservationListeAttente.IReservationListeAttenteService;
 import com.ocr.library.web.exceptions.PretIntrouvableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,9 @@ public class PretController {
 
     @Autowired
     private IPretService pretService;
+
+    @Autowired
+    private IReservationListeAttenteService reservationListeAttenteService;
 
 
     @GetMapping(value="/Pret/{idPret}")
@@ -44,11 +49,19 @@ public class PretController {
     }
 
     @GetMapping(value="/Resas/{idUtilisateur}")
-    public List<Pret> listeResasByUtilisateur(@PathVariable ("idUtilisateur")int idUtilisateur){
+    public List<ReservationListeAttente> listeResasByUtilisateur(@PathVariable ("idUtilisateur")int idUtilisateur){
 
-        List<Pret> resasUtilisateur = pretService.afficherListeResasUtilisateur(idUtilisateur);
+        List<ReservationListeAttente> resasUtilisateur = reservationListeAttenteService.afficherListeAttenteResasUtilisateur(idUtilisateur);
 
         return resasUtilisateur;
+    }
+
+    @GetMapping(value="/DemandeDePretsUtilisateur/{idUtilisateur}")
+    public List<Pret> listeDemandesPretByUtilisateur(@PathVariable ("idUtilisateur")int idUtilisateur){
+
+        List<Pret> listeDemandesPretByUtilisateur = pretService.listeDemandesPretByUtilisateur(idUtilisateur);
+
+        return listeDemandesPretByUtilisateur;
     }
 
 
@@ -60,12 +73,26 @@ public class PretController {
 
     }
 
+    @PostMapping(value="/ReserverPret/{idOuvrage}")
+    public void reserverPret(@PathVariable("idOuvrage") int idOuvrage,@RequestParam(value="idUtilisateur",required=false)int idUtilisateur){
+
+        pretService.reserverPret(idOuvrage,idUtilisateur);
+
+    }
+
+    @GetMapping(value="/DateRetourPlusProche/{idOuvrage}")
+    public Date afficherDateRetourLaPlusProche(@PathVariable ("idOuvrage") int idOuvrage){
+
+        return pretService.afficherDateRetourLaPlusProche(idOuvrage);
+    }
+
     @PutMapping(value="/Pret/{idPret}")
     public void validerPret(@PathVariable("idPret") int idPret){
 
         pretService.validerPret(idPret);
 
     }
+
     @PutMapping(value="/RetourPret/{idPret}")
     public Pret retourPret(@PathVariable ("idPret") int idPret){
 
@@ -83,6 +110,36 @@ public class PretController {
 
         return pret;
     }
+
+    @DeleteMapping(value="/Pret/{idPret}")
+    public void annulerPret(@PathVariable("idPret") int idPret){
+
+        pretService.annulerPret(idPret);
+
+    }
+
+    @DeleteMapping(value="/Resa/{idReservationListeAttente}")
+    public void annulerResa(@PathVariable("idReservationListeAttente") int idReservationListeAttente){
+
+        reservationListeAttenteService.annulerResa(idReservationListeAttente);
+
+    }
+
+    @GetMapping(value="/Resa/{idPret}")
+    public ReservationListeAttente afficherResaByPret(@PathVariable("idPret") int idPret){
+
+        return reservationListeAttenteService.afficherUneResaByIdPret(idPret);
+
+    }
+
+    @GetMapping(value="/Reservations")
+    public List<ReservationListeAttente> afficherToutesReservations(){
+
+        return reservationListeAttenteService.afficherListeAttenteResas();
+
+    }
+
+
 
 
 

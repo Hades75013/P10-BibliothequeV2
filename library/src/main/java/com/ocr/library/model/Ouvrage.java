@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
@@ -33,15 +34,25 @@ public class Ouvrage {
     @Column(name="nombrePages")
     private String nombrePages;
 
+    @Column(name="nombreExemplairesTotal")
+    private int nbExemplairesTotal;
+
     @Column(name="nombreExemplairesDispos")
     private int nbExemplairesDispo;
 
     @Column(name="statut")
     private boolean statut;
 
+    @Column(name="dateRetourLaPlusProche")
+    private Date dateRetourLaPlusProche;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "ouvrage", fetch = FetchType.EAGER)
     private List <Exemplaire> exemplaires;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "ouvrage")
+    private List <ReservationListeAttente> reservationsListeAttente;
 
     @JsonBackReference
     @OneToMany(mappedBy = "ouvrage")
@@ -52,7 +63,8 @@ public class Ouvrage {
     }
 
     public Ouvrage(int id, String titre, String auteur, String genre, String cote, String anneeEdition, String nombrePages,
-                   int nbExemplairesDispo, boolean statut, List<Exemplaire> exemplaires, List<Pret> prets) {
+                   int nbExemplairesTotal, int nbExemplairesDispo, boolean statut, Date dateRetourLaPlusProche,
+                   List<Exemplaire> exemplaires, List<ReservationListeAttente> reservationsListeAttente, List<Pret> prets) {
         this.id = id;
         this.titre = titre;
         this.auteur = auteur;
@@ -60,9 +72,12 @@ public class Ouvrage {
         this.cote = cote;
         this.anneeEdition = anneeEdition;
         this.nombrePages = nombrePages;
+        this.nbExemplairesTotal = nbExemplairesTotal;
         this.nbExemplairesDispo = nbExemplairesDispo;
         this.statut = statut;
+        this.dateRetourLaPlusProche = dateRetourLaPlusProche;
         this.exemplaires = exemplaires;
+        this.reservationsListeAttente = reservationsListeAttente;
         this.prets = prets;
     }
 
@@ -122,6 +137,14 @@ public class Ouvrage {
         this.nombrePages = nombrePages;
     }
 
+    public int getNbExemplairesTotal() {
+        return nbExemplairesTotal;
+    }
+
+    public void setNbExemplairesTotal(int nbExemplairesTotal) {
+        this.nbExemplairesTotal = nbExemplairesTotal;
+    }
+
     public int getNbExemplairesDispo() {
         return nbExemplairesDispo;
     }
@@ -136,6 +159,14 @@ public class Ouvrage {
 
     public void setStatut(boolean statut) {
         this.statut = statut;
+    }
+
+    public Date getDateRetourLaPlusProche() {
+        return dateRetourLaPlusProche;
+    }
+
+    public void setDateRetourLaPlusProche(Date dateRetourLaPlusProche) {
+        this.dateRetourLaPlusProche = dateRetourLaPlusProche;
     }
 
     public List<Exemplaire> getExemplaires() {
@@ -154,7 +185,11 @@ public class Ouvrage {
         this.prets = prets;
     }
 
+    public List<ReservationListeAttente> getReservationsListeAttente() {
+        return reservationsListeAttente;
+    }
 
-
-
+    public void setReservationsListeAttente(List<ReservationListeAttente> reservationsListeAttente) {
+        this.reservationsListeAttente = reservationsListeAttente;
+    }
 }

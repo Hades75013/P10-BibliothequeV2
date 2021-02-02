@@ -2,6 +2,7 @@ package com.ocr.library.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -30,9 +31,6 @@ public class Pret {
     @Column(name="dateRetour")
     private Date dateRetour;
 
-    @Transient
-    private Date dateDuJour = new Date();
-
     @Column(name="prolongeable")
     private boolean prolongeable;
 
@@ -48,24 +46,28 @@ public class Pret {
     @ManyToOne
     private Ouvrage ouvrage;
 
+    @JsonBackReference
+    @OneToOne(mappedBy = "pret",targetEntity=ReservationListeAttente.class)
+    private ReservationListeAttente reservation;
 
 
     public Pret() {
     }
 
-    public Pret(int id, Integer idUtilisateur, Date dateReservation, Date dateDebut, Date dateFin, Date dateRetour, Date dateDuJour,
-                boolean prolongeable, PretStatutEnum statut, Exemplaire exemplaire, Ouvrage ouvrage) {
+    public Pret(int id, Integer idUtilisateur, Date dateReservation, Date dateDebut, Date dateFin, Date dateRetour,
+                boolean prolongeable, PretStatutEnum statut, Exemplaire exemplaire, Ouvrage ouvrage,
+                ReservationListeAttente reservation) {
         this.id = id;
         this.idUtilisateur = idUtilisateur;
         this.dateReservation = dateReservation;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.dateRetour = dateRetour;
-        this.dateDuJour = dateDuJour;
         this.prolongeable = prolongeable;
         this.statut = statut;
         this.exemplaire = exemplaire;
         this.ouvrage = ouvrage;
+        this.reservation = reservation;
     }
 
     public int getId() {
@@ -148,9 +150,26 @@ public class Pret {
         this.ouvrage = ouvrage;
     }
 
+    public ReservationListeAttente getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(ReservationListeAttente reservation) {
+        this.reservation = reservation;
+    }
+
+    public boolean isSurListe() {
+        return PretStatutEnum.SUR_LISTE.equals(this.statut);
+    }
+
     public boolean isEnAttente() {
         return PretStatutEnum.EN_ATTENTE.equals(this.statut);
     }
+
+    public boolean isEnAttenteResa() {
+        return PretStatutEnum.EN_ATTENTE_RESA.equals(this.statut);
+    }
+
 
     public boolean isEnCours() {
         return PretStatutEnum.EN_COURS.equals(this.statut);

@@ -2,8 +2,7 @@
 <html
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{accueil}"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">
+        layout:decorate="~{accueil}">
 
 <head>
     <meta charset="utf-8" />
@@ -27,9 +26,15 @@
             </form>
         </div>
 
+        <div id="espaceperso_demandeDePrets" class="container">
+            <form class="form-inline" th:action="@{/DemandeDePretsUtilisateur}" method="get">
+                <button class="btn btn-primary"><strong>MES DEMANDES DE PRETS</strong></button>
+            </form>
+        </div>
+
         <div id="espaceperso_prets" class="container">
             <form class="form-inline" th:action="@{/PretsUtilisateur}" method="get">
-                <button class="btn btn-primary"><strong>MES PRETS</strong></button>
+                <button class="btn btn-primary"><strong>MES PRETS EN COURS</strong></button>
             </form>
         </div>
 
@@ -50,17 +55,21 @@
                 <thead>
                     <tr>
                         <th>Ouvrage</th>
-                        <th>Nombre d'exemplaires</th>
-                        <th>Date de réservation</th>
-                        <th>Statut</th>
+                        <th>Nombre d'ex. disponibles</th>
+                        <th>Date de demande</th>
+                        <th>Date retour + proche</th>
+                        <th>Position</th>
+                        <th>Annuler Reservation</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="resa:${listeResasUtilisateur}">
                         <td th:text="${resa.ouvrage.titre}"></td>
-                        <td th:text="${resa.ouvrage.exemplaires.size()}"></td>
-                        <td th:text="${resa.dateReservation}"></td>
-                        <td th:text="${resa.statut}"></td>
+                        <td th:text="${resa.ouvrage.nbExemplairesDispo}"></td>
+                        <td th:text="${resa.dateDemande}"></td>
+                        <td th:text="${resa.ouvrage.dateRetourLaPlusProche}"></td>
+                        <td th:text="${resa.position}"></td>
+                        <td><a th:href="@{/AnnulerResa(idReservationListeAttente=${resa.id})}"><span class="glyphicon glyphicon-remove"></span></a></td>
                     </tr>
                 </tbody>
             </table>

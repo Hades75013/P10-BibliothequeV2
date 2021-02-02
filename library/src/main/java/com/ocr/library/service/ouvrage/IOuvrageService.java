@@ -3,6 +3,7 @@ package com.ocr.library.service.ouvrage;
 import com.ocr.library.model.Ouvrage;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IOuvrageService {
@@ -11,7 +12,7 @@ public interface IOuvrageService {
 
     List<Ouvrage> listeOuvrages();
 
-    Ouvrage afficherUnOuvrage(int id);
+    Ouvrage afficherUnOuvrage(int idOuvrage);
 
     List<Ouvrage> rechercheByTitre(@Param("x") String titre);
 
@@ -20,6 +21,7 @@ public interface IOuvrageService {
     List <Ouvrage> rechercheByGenre(@Param("x") String genre);
 
     List<Ouvrage> rechercheByDispo(Boolean statut);
+
 
 
 }

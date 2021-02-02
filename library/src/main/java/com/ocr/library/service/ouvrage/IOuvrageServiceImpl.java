@@ -2,10 +2,12 @@ package com.ocr.library.service.ouvrage;
 
 import com.ocr.library.dao.OuvrageDao;
 import com.ocr.library.model.Ouvrage;
+import com.ocr.library.model.Pret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -100,6 +102,7 @@ public class IOuvrageServiceImpl implements IOuvrageService{
         return ouvrages;
 
     }
+
 
 
 }

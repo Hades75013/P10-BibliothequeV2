@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{accueil}">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <title>Consulter et emprunter des ouvrages</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+
+    <br>
+
+
+    <div id="categories_espace_perso_Admin" class="container">
+
+        <div id="espacepersoadmin_demandeDePrets" class="container">
+            <form class="form-inline" th:action="@{/DemandeDePretsAdmin}" method="get">
+                <button class="btn btn-primary"><strong>LES DEMANDES DE PRET</strong></button>
+            </form>
+        </div>
+
+        <div id="espacepersoadmin_demandeDeReservations" class="container">
+            <form class="form-inline" th:action="@{/DemandeDeReservationsAdmin}" method="get">
+                <button class="btn btn-primary"><strong>LES DEMANDES DE RESERVATION</strong></button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="container" th:if="${listeDemandesReservationsAdmin.isEmpty()}">
+        <h4><strong>Aucunes demandes de reservation actuellement </strong></h4>
+    </div>
+
+    <div id="liste_reservations" class="container" th:unless="${listeDemandesReservationsAdmin.isEmpty()}">
+
+            <div class="table-responsive col-lg-12 col-md-10 col-xs-9">
+                <div id="titreTableau"><h4><strong> LISTE DE RESERVATIONS DES LECTEURS </strong></h4></div>
+                <br>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id Lecteur</th>
+                        <th>Date de demande</th>
+                        <th>Ouvrage</th>
+                        <th>Valider Reservation</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="reservation:${listeDemandesReservationsAdmin}">
+                        <td th:text="${reservation.idUtilisateur}"></td>
+                        <td th:text="${reservation.dateDemande}"></td>
+                        <td th:text="${reservation.ouvrage.titre}"></td>
+                        <td><a th:if="${reservation.pret.enAttenteResa}" th:href="@{/ValiderReservation(idPret=${reservation.pret.id})}" method="get" class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up"></span></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+</section>
+
+<footer>
+    <p layout:fragment="footer"></p>
+</footer>
+
+
+</body>
+</html>

@@ -21,11 +21,9 @@ public class PretBean implements Serializable {
 
     private Date dateRetour;
 
-    private Date dateDuJour = new Date();
+    private boolean prolongeable;
 
     private PretStatutEnumBean statut;
-
-    private boolean prolongeable;
 
     @JsonProperty("exemplaire")
     private ExemplaireBean exemplaire;
@@ -33,18 +31,27 @@ public class PretBean implements Serializable {
     @JsonProperty("ouvrage")
     private OuvrageBean ouvrage;
 
+    @JsonProperty("reservation")
+    private ReservationListeAttenteBean reservation;
+
+
+    public PretBean() {
+    }
+
     public PretBean(int id, Integer idUtilisateur, Date dateReservation, Date dateDebut, Date dateFin, Date dateRetour,
-                    PretStatutEnumBean statut, boolean prolongeable, ExemplaireBean exemplaire, OuvrageBean ouvrage) {
+                    boolean prolongeable, PretStatutEnumBean statut, ExemplaireBean exemplaire, OuvrageBean ouvrage,
+                    ReservationListeAttenteBean reservation) {
         this.id = id;
         this.idUtilisateur = idUtilisateur;
         this.dateReservation = dateReservation;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.dateRetour = dateRetour;
-        this.statut = statut;
         this.prolongeable = prolongeable;
+        this.statut = statut;
         this.exemplaire = exemplaire;
         this.ouvrage = ouvrage;
+        this.reservation = reservation;
     }
 
     public int getId() {
@@ -95,14 +102,6 @@ public class PretBean implements Serializable {
         this.dateRetour = dateRetour;
     }
 
-    public Date getDateDuJour() {
-        return dateDuJour;
-    }
-
-    public void setDateDuJour(Date dateDuJour) {
-        this.dateDuJour = dateDuJour;
-    }
-
     public PretStatutEnumBean getStatut() {
         return statut;
     }
@@ -135,9 +134,26 @@ public class PretBean implements Serializable {
         this.ouvrage = ouvrage;
     }
 
+    public ReservationListeAttenteBean getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(ReservationListeAttenteBean reservation) {
+        this.reservation = reservation;
+    }
+
+    public boolean isSurListe() {
+        return PretStatutEnumBean.SUR_LISTE.equals(this.statut);
+    }
+
     public boolean isEnAttente() {
         return PretStatutEnumBean.EN_ATTENTE.equals(this.statut);
     }
+
+    public boolean isEnAttenteResa() {
+        return PretStatutEnumBean.EN_ATTENTE_RESA.equals(this.statut);
+    }
+
 
     public boolean isEnCours() {
         return PretStatutEnumBean.EN_COURS.equals(this.statut);
@@ -146,6 +162,7 @@ public class PretBean implements Serializable {
     public boolean isProlonge() {
         return PretStatutEnumBean.PROLONGE.equals(this.statut);
     }
+
     public boolean isTermine() {
         return PretStatutEnumBean.TERMINE.equals(this.statut);
     }

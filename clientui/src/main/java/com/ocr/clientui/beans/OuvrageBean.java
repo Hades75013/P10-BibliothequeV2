@@ -4,6 +4,7 @@ package com.ocr.clientui.beans;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class OuvrageBean implements Serializable {
@@ -23,12 +24,19 @@ public class OuvrageBean implements Serializable {
 
     private String nombrePages;
 
+    private int nbExemplairesTotal;
+
     private int nbExemplairesDispo;
 
     private boolean statut;
 
+    private Date dateRetourLaPlusProche;
+
     @JsonProperty("exemplaires")
     private List<ExemplaireBean> exemplaires;
+
+    @JsonProperty("reservationsListeAttente")
+    private List <ReservationListeAttenteBean> reservationsListeAttente;
 
     @JsonProperty("prets")
     private List<PretBean> prets;
@@ -38,7 +46,8 @@ public class OuvrageBean implements Serializable {
     }
 
     public OuvrageBean(int id, String titre, String auteur, String genre, String cote, String anneeEdition, String nombrePages,
-                       int nbExemplairesDispo, boolean statut, List<ExemplaireBean> exemplaires, List<PretBean> prets) {
+                       int nbExemplairesTotal, int nbExemplairesDispo, boolean statut, Date dateRetourLaPlusProche,
+                       List<ExemplaireBean> exemplaires, List<ReservationListeAttenteBean> reservationsListeAttente, List<PretBean> prets) {
         this.id = id;
         this.titre = titre;
         this.auteur = auteur;
@@ -46,9 +55,12 @@ public class OuvrageBean implements Serializable {
         this.cote = cote;
         this.anneeEdition = anneeEdition;
         this.nombrePages = nombrePages;
+        this.nbExemplairesTotal = nbExemplairesTotal;
         this.nbExemplairesDispo = nbExemplairesDispo;
         this.statut = statut;
+        this.dateRetourLaPlusProche = dateRetourLaPlusProche;
         this.exemplaires = exemplaires;
+        this.reservationsListeAttente = reservationsListeAttente;
         this.prets = prets;
     }
 
@@ -108,6 +120,14 @@ public class OuvrageBean implements Serializable {
         this.nombrePages = nombrePages;
     }
 
+    public int getNbExemplairesTotal() {
+        return nbExemplairesTotal;
+    }
+
+    public void setNbExemplairesTotal(int nbExemplairesTotal) {
+        this.nbExemplairesTotal = nbExemplairesTotal;
+    }
+
     public int getNbExemplairesDispo() {
         return nbExemplairesDispo;
     }
@@ -124,12 +144,28 @@ public class OuvrageBean implements Serializable {
         this.statut = statut;
     }
 
+    public Date getDateRetourLaPlusProche() {
+        return dateRetourLaPlusProche;
+    }
+
+    public void setDateRetourLaPlusProche(Date dateRetourLaPlusProche) {
+        this.dateRetourLaPlusProche = dateRetourLaPlusProche;
+    }
+
     public List<ExemplaireBean> getExemplaires() {
         return exemplaires;
     }
 
     public void setExemplaires(List<ExemplaireBean> exemplaires) {
         this.exemplaires = exemplaires;
+    }
+
+    public List<ReservationListeAttenteBean> getReservationsListeAttente() {
+        return reservationsListeAttente;
+    }
+
+    public void setReservationsListeAttente(List<ReservationListeAttenteBean> reservationsListeAttente) {
+        this.reservationsListeAttente = reservationsListeAttente;
     }
 
     public List<PretBean> getPrets() {
