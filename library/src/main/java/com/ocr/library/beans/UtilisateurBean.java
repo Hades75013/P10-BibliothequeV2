@@ -18,6 +18,9 @@ public class UtilisateurBean {
 
     private Collection roles;
 
+    public UtilisateurBean() {
+    }
+
     public UtilisateurBean(int id, String nom, String prenom, String adresse, String email, String motDePasse, Collection roles) {
         this.id = id;
         this.nom = nom;

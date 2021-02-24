@@ -22,14 +22,6 @@ public class PretController {
     private IReservationListeAttenteService reservationListeAttenteService;
 
 
-    @GetMapping(value="/Pret/{idPret}")
-    public Pret afficherUnPret(@PathVariable ("idPret") int idPret){
-
-        Pret pret = pretService.afficherUnPret(idPret);
-        if (pret==null) throw new PretIntrouvableException("Le prêt avec l'id "+idPret+" est introuvable.");
-
-        return pret;
-    }
 
     @GetMapping(value="/Prets")
     public List<Pret> listePrets(){
@@ -39,6 +31,16 @@ public class PretController {
         return prets;
 
     }
+
+    @GetMapping(value="/Pret/{idPret}")
+    public Pret afficherUnPret(@PathVariable ("idPret") int idPret){
+
+        Pret pret = pretService.afficherUnPret(idPret);
+        if (pret==null) throw new PretIntrouvableException("Le prêt avec l'id "+idPret+" est introuvable.");
+
+        return pret;
+    }
+
 
     @GetMapping(value="/Prets/{idUtilisateur}")
     public List<Pret> listePretsByUtilisateur(@PathVariable ("idUtilisateur")int idUtilisateur){
@@ -67,16 +69,20 @@ public class PretController {
 
 
     @PostMapping(value="/Pret/{idOuvrage}")
-    public void demanderPret(@PathVariable("idOuvrage") int idOuvrage,@RequestParam(value="idUtilisateur",required=false)int idUtilisateur){
+    public Pret demanderPret(@PathVariable("idOuvrage") int idOuvrage,@RequestParam(value="idUtilisateur",required=false)int idUtilisateur){
 
-        pretService.demanderPret(idOuvrage,idUtilisateur);
+        Pret pret = pretService.demanderPret(idOuvrage,idUtilisateur);
+
+        return pret;
 
     }
 
     @PostMapping(value="/ReserverPret/{idOuvrage}")
-    public void reserverPret(@PathVariable("idOuvrage") int idOuvrage,@RequestParam(value="idUtilisateur",required=false)int idUtilisateur){
+    public ReservationListeAttente reserverPret(@PathVariable("idOuvrage") int idOuvrage,@RequestParam(value="idUtilisateur",required=false)int idUtilisateur){
 
-        pretService.reserverPret(idOuvrage,idUtilisateur);
+        ReservationListeAttente reservation = pretService.reserverPret(idOuvrage,idUtilisateur);
+
+        return reservation;
 
     }
 
@@ -87,9 +93,12 @@ public class PretController {
     }
 
     @PutMapping(value="/Pret/{idPret}")
-    public void validerPret(@PathVariable("idPret") int idPret){
+    public Pret validerPret(@PathVariable("idPret") int idPret){
 
-        pretService.validerPret(idPret);
+        Pret pret = pretService.validerPret(idPret);
+        if (pret==null) throw new PretIntrouvableException("Le prêt avec l'id "+idPret+" est introuvable.");
+
+        return pret;
 
     }
 
@@ -125,12 +134,6 @@ public class PretController {
 
     }
 
-    @GetMapping(value="/Resa/{idPret}")
-    public ReservationListeAttente afficherResaByPret(@PathVariable("idPret") int idPret){
-
-        return reservationListeAttenteService.afficherUneResaByIdPret(idPret);
-
-    }
 
     @GetMapping(value="/Reservations")
     public List<ReservationListeAttente> afficherToutesReservations(){
@@ -138,6 +141,16 @@ public class PretController {
         return reservationListeAttenteService.afficherListeAttenteResas();
 
     }
+
+
+    @GetMapping(value="/Resa/{idPret}")
+    public ReservationListeAttente afficherResaByPret(@PathVariable("idPret") int idPret){
+
+        return reservationListeAttenteService.afficherUneResaByIdPret(idPret);
+
+    }
+
+
 
 
 

@@ -113,32 +113,9 @@ public class IPretServiceImpl implements IPretService{
         Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(idOuvrage);
         UtilisateurBean utilisateur = utilisateurBeanService.findById(idUtilisateur);
 
-        //verification si l'utilisateur n'a pas déjà une réservation en cours pour cet ouvrage
-        List<ReservationListeAttente> reservations = listeAttenteReservationService.afficherListeAttenteResasOuvrage(ouvrage.getId());
-        for (ReservationListeAttente reservation : reservations) {
-            if (reservation.getIdUtilisateur()==utilisateur.getId()){
-                throw new PretIntrouvableException("Vous possédez déjà une reservation en attente pour cet ouvrage; veuillez patienter, la réponse de la Bibliothèque Municipale est imminente !");
-            }
-        }
-
-        //verification si l'utilisateur n'a pas déjà une demande de pret pour cet ouvrage
-        List<Pret> demandesPret = pretDao.listeDemandesPretByOuvrage(ouvrage.getId());
-        for (Pret emprunt : demandesPret) {
-            if (emprunt.getIdUtilisateur()==utilisateur.getId()){
-                throw new PretIntrouvableException("Vous avez déjà une demande de prêt en attente de validation"+
-                        " pour l'ouvrage "+ouvrage.getTitre()+". Veuillez patienter,"+
-                        " la réponse de la Bibliothèque est imminente !");
-            }
-        }
-        //verification si l'utilisateur n'a pas déjà un emprunt en cours pour cet ouvrage
-        List<Pret> prets = pretDao.findPretsByOuvrage(ouvrage.getId());
-        for (Pret emprunt : prets) {
-            if (emprunt.getIdUtilisateur()==utilisateur.getId()){
-                throw new PretIntrouvableException("Vous possédez déjà l'exemplaire N° "+emprunt.getExemplaire().getId()+
-                        " appartenant à cet ouvrage, veuillez d'abord retourner l'exemplaire en votre possession"+
-                        " pour pouvoir en emprunter un autre");
-            }
-        }
+        verifResaEnCours(ouvrage.getId(),utilisateur.getId());
+        verifDemandeDePret(ouvrage.getId(),utilisateur.getId());
+        verifPretEnCours(ouvrage.getId(),utilisateur.getId());
 
         Pret pret = new Pret();
         Calendar cal = Calendar.getInstance();
@@ -155,6 +132,59 @@ public class IPretServiceImpl implements IPretService{
         return pret;
     }
 
+
+    @Override
+    public void verifDemandeDePret(int idOuvrage, int idUtilisateur) {
+
+        Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(idOuvrage);
+        UtilisateurBean utilisateur = utilisateurBeanService.findById(idUtilisateur);
+
+        //verification si l'utilisateur n'a pas déjà une demande de pret pour cet ouvrage
+        List<Pret> demandesPret = pretDao.listeDemandesPretByOuvrage(ouvrage.getId());
+        for (Pret emprunt : demandesPret) {
+            if (emprunt.getIdUtilisateur()==utilisateur.getId()) {
+                throw new PretIntrouvableException("Vous avez déjà une demande de prêt en attente de validation" +
+                        " pour l'ouvrage " + ouvrage.getTitre() + ". Veuillez patienter," +
+                        " la réponse de la Bibliothèque est imminente !");
+            }
+        }
+    }
+
+    @Override
+    public void verifResaEnCours(int idOuvrage, int idUtilisateur) {
+
+        Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(idOuvrage);
+        UtilisateurBean utilisateur = utilisateurBeanService.findById(idUtilisateur);
+
+        //verification si l'utilisateur n'a pas déjà une réservation en cours pour cet ouvrage
+        List<ReservationListeAttente> reservations = listeAttenteReservationService.afficherListeAttenteResasOuvrage(ouvrage.getId());
+        for (ReservationListeAttente reservation : reservations) {
+            if (reservation.getIdUtilisateur()==utilisateur.getId()) {
+                throw new PretIntrouvableException("Vous possédez déjà une reservation en attente pour cet ouvrage; veuillez patienter, la réponse de la Bibliothèque Municipale est imminente !");
+            }
+        }
+    }
+
+
+
+    @Override
+    public void verifPretEnCours(int idOuvrage, int idUtilisateur) {
+
+        Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(idOuvrage);
+        UtilisateurBean utilisateur = utilisateurBeanService.findById(idUtilisateur);
+
+        //verification si l'utilisateur n'a pas déjà un emprunt en cours pour cet ouvrage
+        List<Pret> prets = pretDao.findPretsByOuvrage(ouvrage.getId());
+        for (Pret emprunt : prets) {
+            if (emprunt.getIdUtilisateur()==utilisateur.getId()){
+                throw new PretIntrouvableException("Vous possédez déjà l'exemplaire N° "+emprunt.getExemplaire().getId()+
+                        " appartenant à cet ouvrage, veuillez d'abord retourner l'exemplaire en votre possession"+
+                        " pour pouvoir en emprunter un autre");
+            }
+        }
+    }
+
+
     /**
      *
      * @param idOuvrage
@@ -167,6 +197,7 @@ public class IPretServiceImpl implements IPretService{
         ReservationListeAttente reservation = new ReservationListeAttente();
         Ouvrage ouvrage = ouvrageService.afficherUnOuvrage(idOuvrage);
         UtilisateurBean utilisateur = utilisateurBeanService.findById(idUtilisateur);
+
 
 
         //verification si l'utilisateur n'a pas déjà une réservation en cours pour cet ouvrage
@@ -373,6 +404,35 @@ public class IPretServiceImpl implements IPretService{
 
     }
 
+
+
+    /**
+     *
+     * @param idPret
+     * @return pretProlonge
+     */
+    @Override
+    public Pret prolongationPret(int idPret) {
+        Pret pret = pretDao.findById(idPret);
+        if (pret==null) throw new PretIntrouvableException("Le prêt avec l'id "+idPret+" est introuvable.");
+
+        Date finPretInitiale = pret.getDateFin();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(finPretInitiale);
+
+        cal.add(Calendar.MONTH,1);
+        Date finPretProlonge = cal.getTime();
+        pret.setDateFin(finPretProlonge);
+        pret.setStatut(PretStatutEnum.PROLONGE);
+        pret.setProlongeable(false);
+
+        Pret pretProlonge = pretDao.save(pret);
+
+        return pretProlonge;
+    }
+
+
+
     /**
      *
      * @param idPret
@@ -428,30 +488,7 @@ public class IPretServiceImpl implements IPretService{
 
     }
 
-    /**
-     *
-     * @param idPret
-     * @return pretProlonge
-     */
-    @Override
-    public Pret prolongationPret(int idPret) {
-        Pret pret = pretDao.findById(idPret);
-        if (pret==null) throw new PretIntrouvableException("Le prêt avec l'id "+idPret+" est introuvable.");
 
-        Date finPretInitiale = pret.getDateFin();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(finPretInitiale);
-
-        cal.add(Calendar.MONTH,1);
-        Date finPretProlonge = cal.getTime();
-        pret.setDateFin(finPretProlonge);
-        pret.setStatut(PretStatutEnum.PROLONGE);
-        pret.setProlongeable(false);
-
-        Pret pretProlonge = pretDao.save(pret);
-
-        return pretProlonge;
-    }
 
 
     /**
@@ -467,6 +504,8 @@ public class IPretServiceImpl implements IPretService{
         pretDao.delete(pret);
 
     }
+
+
 
 
 }
