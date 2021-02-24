@@ -1,4 +1,4 @@
-# P7-Bibliotheque
+# P10-Ameliorer le systeme d'information de la bibliotheque
 
 
 ## Architecture 
@@ -19,13 +19,15 @@ Cette application a été développée avec :
 
 ## Déploiement
 
-* La source du projet est hérbergée sur GitHub à l'adresse : https://github.com/Hades75013/P7-Bibliotheque
+* La source du projet est hérbergée sur GitHub à l'adresse : https://github.com/Hades75013/P10-BibliothequeV2
 * Les dépendances du projet sont gérées par Apache Maven.
 * L'application se builde par Maven au format .war.
 
 Les frameworks utilisés sont : 
-* Spring MVC/ SpringBoot
+* Spring MVC/ SpringBoot/Spring Batch
 * Bootstrap
+* Junit
+* Mockito
 
 * Les infos de la base de données sont stockées sur un serveur MySQL.
 * L'application est déployée sur un serveur Apache Tomcat v9
@@ -34,10 +36,10 @@ Les frameworks utilisés sont :
 ## Base de données
 
 * Pour la base de données, vous trouverez toutes les infos utiles dans le fichier "application.properties"
-  Lancer le script "DumpCreateAndInsertTo.sql" pour créer la bdd et insérer les données.
+  Lancer le script DumpCreationJeudedemoDB_P10.sql pour créer la bdd et insérer les données.
 
 * Utilisateurs créés au préalable  
- 3 lecteurs lambda (role USER): 
+ 4 lecteurs lambda (role USER): 
   
   Email : p7bibliou1@gmail.com
   Mot de passe : user
@@ -47,6 +49,9 @@ Les frameworks utilisés sont :
 
   Email : p7bibliou3@gmail.com
   Mot de passe : bourriquet
+
+  Email : p7bibliou4@gmail.com
+  Mot de passe : moghez
 
   Un personnnel de bibliothèque (role ADMIN): 
   
