@@ -36,7 +36,10 @@ Les frameworks utilisés sont :
 ## Base de données
 
 * Pour la base de données, vous trouverez toutes les infos utiles dans le fichier "application.properties"
+  Lancer le script DumpCreationJeudedemoDB_P10.sql pour créer la bdd et insérer le jeu de données.
+  Pour la mise à jour de la base de donnees, lancer le script de migration dumpMigrationP7_P10.txt.
   Lancer le script DumpCreationJeudedemoDB_P10.sql pour créer la bdd et insérer les données.
+
 
 * Utilisateurs créés au préalable  
  4 lecteurs lambda (role USER): 

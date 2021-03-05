@@ -39,7 +39,7 @@ CREATE TABLE `exemplaire` (
 
 LOCK TABLES `exemplaire` WRITE;
 /*!40000 ALTER TABLE `exemplaire` DISABLE KEYS */;
-INSERT INTO `exemplaire` VALUES (37,1,_binary '\0'),(38,1,_binary '\0'),(39,1,_binary '\0'),(40,5,_binary '\0'),(41,5,_binary '\0'),(42,5,_binary '\0'),(49,2,_binary '\0'),(50,2,_binary ''),(51,2,_binary ''),(52,2,_binary ''),(53,2,_binary ''),(54,2,_binary ''),(55,3,_binary ''),(56,3,_binary ''),(57,3,_binary ''),(58,3,_binary ''),(59,3,_binary ''),(60,3,_binary ''),(61,3,_binary ''),(62,3,_binary ''),(63,8,_binary '\0'),(64,8,_binary ''),(65,8,_binary ''),(66,8,_binary ''),(67,8,_binary ''),(68,4,_binary '\0'),(69,4,_binary ''),(70,4,_binary ''),(71,4,_binary ''),(72,4,_binary ''),(73,4,_binary ''),(74,4,_binary ''),(75,4,_binary ''),(76,4,_binary ''),(77,4,_binary '');
+INSERT INTO `exemplaire` VALUES (37,1,_binary ''),(38,1,_binary ''),(39,2,_binary ''),(40,2,_binary ''),(41,2,_binary ''),(42,2,_binary ''),(43,2,_binary ''),(44,2,_binary ''),(45,3,_binary ''),(46,3,_binary ''),(47,3,_binary ''),(48,3,_binary ''),(49,4,_binary ''),(50,4,_binary ''),(51,5,_binary ''),(52,5,_binary ''),(53,6,_binary ''),(54,6,_binary ''),(55,6,_binary ''),(56,6,_binary ''),(57,6,_binary '');
 /*!40000 ALTER TABLE `exemplaire` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,8 +61,36 @@ CREATE TABLE `hibernate_sequence` (
 
 LOCK TABLES `hibernate_sequence` WRITE;
 /*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
-INSERT INTO `hibernate_sequence` VALUES (121),(1),(1),(1);
+INSERT INTO `hibernate_sequence` VALUES (514),(1),(1),(1),(1),(1),(1),(1),(1);
 /*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mail`
+--
+
+DROP TABLE IF EXISTS `mail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mail` (
+  `id` int(11) NOT NULL,
+  `id_utilisateur` int(11) DEFAULT NULL,
+  `date_envoi` datetime DEFAULT NULL,
+  `id_pret_rendu` int(11) DEFAULT NULL,
+  `id_reservation` int(11) DEFAULT NULL,
+  `statut` varchar(255) NOT NULL,
+  `id_pret` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mail`
+--
+
+LOCK TABLES `mail` WRITE;
+/*!40000 ALTER TABLE `mail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mail` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -82,6 +110,8 @@ CREATE TABLE `ouvrage` (
   `statut` bit(1) DEFAULT NULL,
   `titre` varchar(255) DEFAULT NULL,
   `nombre_exemplaires_dispos` int(11) DEFAULT NULL,
+  `nombre_exemplaires_total` int(11) DEFAULT NULL,
+  `date_retour_la_plus_proche` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -92,7 +122,7 @@ CREATE TABLE `ouvrage` (
 
 LOCK TABLES `ouvrage` WRITE;
 /*!40000 ALTER TABLE `ouvrage` DISABLE KEYS */;
-INSERT INTO `ouvrage` VALUES (1,'2016','Stan Lee','SF-15','Sciences-Fiction','83',_binary '\0','Les Avengers',0),(2,'1857','Baudelaire','Poe-07','Poesie','416',_binary '','Les Fleurs du mal',4),(3,'1942','Camus','Fr-24','Litterature francaise','176',_binary '','L_Etranger',7),(4,'1862','Hugo','Fr-17','Litterature francaise','1664',_binary '','Les Miserables',9),(5,'1943','Saint-Exupery','Fr-05','Litterature francaise','104',_binary '\0','Le petit prince',0),(8,'1857','Flaubert','Fr-13','Litterature française','479',_binary '','Madame BOVARY',4);
+INSERT INTO `ouvrage` VALUES (1,'2015','Stan Lee','SF-15','Sciences-Fiction','83',_binary '','Les Avengers',2,2,NULL),(2,'1857','Baudelaire','Poe-07','Poesie','416',_binary '','Les Fleurs du mal',6,6,NULL),(3,'1942','Camus','Fr-24','Litterature francaise','176',_binary '','L_Etranger',4,4,NULL),(4,'1862','Hugo','Fr-17','Litterature francaise','1664',_binary '','Les Miserables',2,2,NULL),(5,'1943','Saint-Exupery','Fr-05','Litterature francaise','104',_binary '','Le petit prince',2,2,NULL),(6,'1857','Flaubert','Fr-13','Litterature francaise','479',_binary '','Madame BOVARY',5,5,NULL);
 /*!40000 ALTER TABLE `ouvrage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,8 +156,36 @@ CREATE TABLE `pret` (
 
 LOCK TABLES `pret` WRITE;
 /*!40000 ALTER TABLE `pret` DISABLE KEYS */;
-INSERT INTO `pret` VALUES (95,'2020-11-16 09:53:05','2020-11-18 09:53:05','DEPASSE',2,79,_binary '\0',49,'2020-11-16 09:50:47',NULL),(96,'2020-11-16 09:53:11','2020-12-16 09:53:11','TERMINE',3,79,_binary '\0',55,'2020-11-16 09:50:52','2020-11-17 10:58:28'),(98,'2020-11-17 10:52:42','2020-12-17 10:52:42','EN_COURS',5,79,_binary '',40,'2020-11-16 09:51:02',NULL),(99,'2020-11-17 10:52:50','2020-12-17 10:52:50','TERMINE',8,79,_binary '\0',63,'2020-11-16 09:51:08','2020-11-17 10:58:46'),(103,'2020-11-16 11:02:38','2021-01-16 11:02:38','PROLONGE',1,102,_binary '\0',38,'2020-11-16 10:59:57',NULL),(104,NULL,NULL,'EN_ATTENTE',2,102,_binary '\0',NULL,'2020-11-16 11:00:10',NULL),(105,'2020-10-01 09:27:44','2020-11-01 09:27:44','DEPASSE',8,102,_binary '',63,'2020-11-16 11:00:16',NULL),(107,'2020-12-07 11:10:26','2021-01-07 11:10:26','TERMINE',4,100,_binary '\0',69,'2020-11-16 11:01:25','2020-12-07 11:10:54'),(108,'2020-11-17 10:53:51','2020-12-17 10:53:51','EN_COURS',5,100,_binary '',41,'2020-11-16 11:01:33',NULL),(115,'2020-11-17 10:53:26','2020-12-17 10:53:26','TERMINE',4,102,_binary '\0',68,'2020-11-17 09:20:02','2020-11-17 10:59:06'),(117,'2020-11-17 09:32:59','2020-11-27 09:32:59','DEPASSE',1,100,_binary '\0',39,'2020-11-17 09:30:46',NULL),(120,'2020-11-30 13:24:19','2020-12-30 13:24:19','EN_COURS',1,79,_binary '',37,'2020-11-30 13:23:38',NULL),(119,'2020-11-19 11:01:58','2020-12-19 11:01:58','EN_COURS',5,102,_binary '',42,'2020-11-19 11:01:36',NULL);
 /*!40000 ALTER TABLE `pret` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reservation_liste_attente`
+--
+
+DROP TABLE IF EXISTS `reservation_liste_attente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reservation_liste_attente` (
+  `id` int(11) NOT NULL,
+  `date_demande` datetime DEFAULT NULL,
+  `id_utilisateur` int(11) DEFAULT NULL,
+  `ouvrage_id` int(11) DEFAULT NULL,
+  `position` int(11) DEFAULT NULL,
+  `pret_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK8bcoa372cocq2y1w26akynjhh` (`ouvrage_id`),
+  KEY `FK7w6s3smphfxsbsgmseuo04gn0` (`pret_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reservation_liste_attente`
+--
+
+LOCK TABLES `reservation_liste_attente` WRITE;
+/*!40000 ALTER TABLE `reservation_liste_attente` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reservation_liste_attente` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -150,7 +208,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (79,'USER'),(80,'ADMIN'),(100,'USER'),(101,'USER'),(102,'USER');
+INSERT INTO `role` VALUES (79,'USER'),(80,'ADMIN'),(100,'USER'),(101,'USER'),(102,'USER'),(121,'USER'),(148,'USER'),(489,'USER'),(500,'USER'),(501,'USER'),(509,'USER'),(513,'USER');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +236,7 @@ CREATE TABLE `utilisateur` (
 
 LOCK TABLES `utilisateur` WRITE;
 /*!40000 ALTER TABLE `utilisateur` DISABLE KEYS */;
-INSERT INTO `utilisateur` VALUES (79,'17, quartier de la peupleraie 91350 GRIGNY','p7bibliou1@gmail.com','$2a$10$i0WiFH6n8jiKelADzaKqEOlH/myrp6k9rrpwfXOB0Fn9I5B0CznQW','SAMBA','Padoue'),(80,'21bis Rue Des Rossays 91600 SAVIGNY-SUR-ORGE','p7biblioadm@gmail.com','$2a$10$mtAX7bs2YXTqehXi2GKyQOrOU6cMpihhWTP.Wttcga29QE15dvOuK','KESSI','Sif'),(100,'5, allée des sardines 77120 ESBLY','p7bibliou2@gmail.com','$2a$10$9BnwCxcGzAA6ma23SHhDLuv4ItNntAgDDybBaXT64c0cPfaeHpa.u','GOUSSOT','Alexandre'),(102,'3,avenue de l\'Europe 77600 BUSSY-ST-GEORGES','p7bibliou3@gmail.com','$2a$10$p0e7jqBb4X4d2U6lVPVOsuR/A7kXBQ20j0.U0q3.jtCEEAIlgeCJe','SALESSES','Antoine');
+INSERT INTO `utilisateur` VALUES (79,'17, quartier de la peupleraie 91350 GRIGNY','p7bibliou1@gmail.com','$2a$10$i0WiFH6n8jiKelADzaKqEOlH/myrp6k9rrpwfXOB0Fn9I5B0CznQW','SAMBA','Padoue'),(80,'21bis Rue Des Rossays 91600 SAVIGNY-SUR-ORGE','p7biblioadm@gmail.com','$2a$10$mtAX7bs2YXTqehXi2GKyQOrOU6cMpihhWTP.Wttcga29QE15dvOuK','KESSI','Sif'),(100,'5, allée des sardines 77120 ESBLY','p7bibliou2@gmail.com','$2a$10$9BnwCxcGzAA6ma23SHhDLuv4ItNntAgDDybBaXT64c0cPfaeHpa.u','GOUSSOT','Alexandre'),(102,'3,avenue de l\'Europe 77600 BUSSY-ST-GEORGES','p7bibliou3@gmail.com','$2a$10$p0e7jqBb4X4d2U6lVPVOsuR/A7kXBQ20j0.U0q3.jtCEEAIlgeCJe','SALESSES','Antoine'),(148,'10, rue des Acacias 44000 NANTES','p7bibliou4@gmail.com','$2a$10$G3TviNZOT.DWHpIhcQeP9uZaZ4PgP2cPBxziZjwfug22fBHiDAUq2','JERBI','Aimen');
 /*!40000 ALTER TABLE `utilisateur` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -191,4 +249,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-11 15:44:48
+-- Dump completed on 2021-02-24 11:57:50
