@@ -23,9 +23,7 @@ public class ReservationListeAttente {
     @Column
     private Integer position;
 
-   /* @Column(name="pret_id")
-    private int pretID;
-*/
+
     @JsonManagedReference
     @OneToOne
     private Pret pret;

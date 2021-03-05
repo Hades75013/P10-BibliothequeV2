@@ -57,7 +57,7 @@ public class IEmailServiceImpl implements  IEmailService{
         Ouvrage ouvrage = pretRendu.getOuvrage();
         List<ReservationListeAttente> resasListeAttente = reservationListeAttenteService.afficherListeAttenteResasOuvrage(ouvrage.getId());
         ReservationListeAttente reservation = resasListeAttente.get(0);
-        UtilisateurBean utilisateur = utilisateurBeanService.findById(resasListeAttente.get(0).getIdUtilisateur());
+        UtilisateurBean utilisateur = utilisateurBeanService.findById(reservation.getIdUtilisateur());
 
         Pret pret = reservation.getPret();
         pret.setStatut(PretStatutEnum.EN_ATTENTE_RESA);
@@ -69,7 +69,7 @@ public class IEmailServiceImpl implements  IEmailService{
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
         mailSender.setUsername("p7biblioadm@gmail.com");
-        mailSender.setPassword("p7biblioadm12345");
+        mailSender.setPassword("p7biblioadm123");
 
         Properties mailProperties = mailSender.getJavaMailProperties();
         mailProperties.put("mail.smtp.starttls.enable", "true");
@@ -99,6 +99,7 @@ public class IEmailServiceImpl implements  IEmailService{
         mail.setIdUtilisateur(utilisateur.getId());
         mail.setIdPretRendu(pretRendu.getId());
         mail.setIdReservation(reservation.getId());
+        mail.setIdPret(pret.getId());
         mail.setStatut(MailStatutEnum.ENVOYE);
 
         mailDao.save(mail);
@@ -138,6 +139,7 @@ public class IEmailServiceImpl implements  IEmailService{
 
         }
 
+    //Une semaine avant la fin de son prêt, on rappelle au lecteur qu'il a la possibilité de le prolonger
     @Override
     //@Scheduled(cron = "0 * * * * *")
     public void envoiMailRelanceProlongation() throws MessagingException {
@@ -146,7 +148,7 @@ public class IEmailServiceImpl implements  IEmailService{
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
         mailSender.setUsername("p7biblioadm@gmail.com");
-        mailSender.setPassword("p7biblioadm12345");
+        mailSender.setPassword("p7biblioadm123");
 
         Properties mailProperties = mailSender.getJavaMailProperties();
         mailProperties.put("mail.smtp.starttls.enable", "true");
@@ -201,7 +203,7 @@ public class IEmailServiceImpl implements  IEmailService{
     }
 
     @Override
-    //@Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void prolongeableFalse() {
 
         Calendar cal = Calendar.getInstance();

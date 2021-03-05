@@ -37,7 +37,7 @@ public interface PretDao extends JpaRepository <Pret,Integer> {
     List<Pret> listeDemandesPretByOuvrage(int idOuvrage);
 
     //trouver tous les prets en cours par utilisateur
-    @Query("select p from Pret p where (p.statut = 'EN_COURS' or p.statut = 'PROLONGE' ) and p.idUtilisateur = :idUtilisateur order by p.dateReservation")
+    @Query("select p from Pret p where (p.statut = 'EN_COURS' or p.statut = 'PROLONGE' or p.statut = 'DEPASSE' ) and p.idUtilisateur = :idUtilisateur order by p.dateReservation")
     List<Pret> findPretsByUser(int idUtilisateur);
 
     //trouver tous les prets en cours par ouvrage

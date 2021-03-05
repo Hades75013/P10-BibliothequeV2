@@ -348,7 +348,7 @@ public class IPretServiceImpl implements IPretService{
             }
 
 
-        }
+        }else {
 
             pret.setExemplaire(exemplaireService.getExemplairesDisponiblesByOuvrageId(pret.getOuvrage().getId()).get(0));
             pret.getExemplaire().setDisponible(false);
@@ -367,6 +367,7 @@ public class IPretServiceImpl implements IPretService{
 
             pretDao.save(pret);
             ouvrageService.save(pret.getOuvrage());
+        }
 
             if(exemplaireService.getExemplairesDisponiblesByOuvrageId(pret.getOuvrage().getId()).isEmpty()){
                 pret.getOuvrage().setStatut(false);
